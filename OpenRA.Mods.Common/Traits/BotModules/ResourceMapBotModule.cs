@@ -101,7 +101,7 @@ namespace OpenRA.Mods.Common.Traits
 			if (firstTick)
 			{
 				resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
-				updateResourceMapInterval = world.LocalRandom.Next(Info.UpdateResourceMapInverval, Info.UpdateResourceMapInverval << 1);
+				updateResourceMapInterval = world.BotRandom.Next(Info.UpdateResourceMapInverval, Info.UpdateResourceMapInverval << 1);
 
 				if (resourceMapIndices == null && resourceLayer != null)
 				{

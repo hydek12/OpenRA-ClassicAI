@@ -1,0 +1,1992 @@
+diff --git a/OpenRA.Game/Game.cs b/OpenRA.Game/Game.cs
+--- a/OpenRA.Game/Game.cs
++++ b/OpenRA.Game/Game.cs
+@@ -299,6 +299,11 @@
+ 
+ 		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders)
+ 		{
++			CreateAndStartLocalServer(mapUID, setupOrders, false);
++		}
++
++		static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders, bool isSkirmish)
++		{
+ 			OrderManager om = null;
+ 
+ 			void LobbyReady()
+@@ -310,7 +315,18 @@
+ 
+ 			LobbyInfoChanged += LobbyReady;
+ 
+-			om = JoinServer(CreateLocalServer(mapUID), "");
++			om = JoinServer(CreateLocalServer(mapUID, isSkirmish), "");
++		}
++
++		public static bool IsLocalSkirmish(World world)
++		{
++			return world.Type == WorldType.Regular && !world.IsReplay && server?.Type == ServerType.Skirmish &&
++				server.LobbyInfo.GlobalSettings.GameUid == world.LobbyInfo.GlobalSettings.GameUid;
++		}
++
++		internal static int? GetObservatorySeed(World world)
++		{
++			return IsLocalSkirmish(world) ? server.ObservatorySeed : null;
+ 		}
+ 
+ 		public static bool IsHost
+@@ -1001,6 +1017,11 @@
+ 
+ 		public static void LoadMap(string launchMap)
+ 		{
++			LoadMap(launchMap, false);
++		}
++
++		public static void LoadMap(string launchMap, bool observatorySkirmish)
++		{
+ 			var orders = new List<Order>
+ 			{
+ 				Order.Command("option gamespeed default"),
+@@ -1011,7 +1032,15 @@
+ 			if (map == null)
+ 				throw new ArgumentException($"Could not find map '{launchMap}'.");
+ 
+-			CreateAndStartLocalServer(map.Uid, orders);
++			if (observatorySkirmish)
++			{
++				// The local skirmish profile sets the bot slots and lobby options.
++				orders.Clear();
++				orders.Add(Order.Command($"state {Session.ClientState.NotReady}"));
++				orders.Add(Order.Command("startgame"));
++			}
++
++			CreateAndStartLocalServer(map.Uid, orders, isSkirmish: observatorySkirmish);
+ 		}
+ 
+ 		public static void FinishBenchmark()
+diff --git a/OpenRA.Game/Network/OrderManager.cs b/OpenRA.Game/Network/OrderManager.cs
+--- a/OpenRA.Game/Network/OrderManager.cs
++++ b/OpenRA.Game/Network/OrderManager.cs
+@@ -89,8 +89,8 @@
+ 				return;
+ 
+ 			syncReport.DumpSyncReport(frame);
++			IsOutOfSync = true;
+ 			World.OutOfSync();
+-			IsOutOfSync = true;
+ 
+ 			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, "frame", frame);
+ 		}
+diff --git a/OpenRA.Game/Server/Server.cs b/OpenRA.Game/Server/Server.cs
+--- a/OpenRA.Game/Server/Server.cs
++++ b/OpenRA.Game/Server/Server.cs
+@@ -116,6 +116,7 @@
+ 
+ 		public readonly MersenneTwister Random = new();
+ 		public readonly ServerType Type;
++		internal readonly int? ObservatorySeed;
+ 		public bool IsMultiplayer => Type == ServerType.Dedicated || Type == ServerType.Multiplayer;
+ 
+ 		public readonly List<Connection> Conns = [];
+@@ -304,7 +305,12 @@
+ 
+ 			playerDatabase = modData.GetOrCreate<PlayerDatabase>();
+ 
+-			randomSeed = (int)DateTime.Now.ToBinary();
++			if (type == ServerType.Skirmish && modData.Manifest.Id == "ra-classic" &&
++				!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_DIR")) &&
++				int.TryParse(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_SEED"), out var observatorySeed))
++				ObservatorySeed = observatorySeed;
++
++			randomSeed = ObservatorySeed ?? (int)DateTime.Now.ToBinary();
+ 
+ 			if (IsMultiplayer && settings.EnableGeoIP)
+ 				GeoIP.Initialize();
+diff --git a/OpenRA.Game/Support/LaunchArguments.cs b/OpenRA.Game/Support/LaunchArguments.cs
+--- a/OpenRA.Game/Support/LaunchArguments.cs
++++ b/OpenRA.Game/Support/LaunchArguments.cs
+@@ -30,6 +30,9 @@
+ 
+ 		[Desc("Automatically start playing the given map.")]
+ 		public string Map;
++
++		[Desc("Start Launch.Map as a local Red Alert Classic skirmish using the saved skirmish profile.")]
++		public bool ObservatorySkirmish;
+ 
+ 		public LaunchArguments(Arguments args)
+ 		{
+diff --git a/OpenRA.Game/World.cs b/OpenRA.Game/World.cs
+--- a/OpenRA.Game/World.cs
++++ b/OpenRA.Game/World.cs
+@@ -50,6 +50,10 @@
+ 
+ 		public readonly MersenneTwister SharedRandom;
+ 		public readonly MersenneTwister LocalRandom;
++		public readonly int? ObservatoryLocalSeed;
++		public readonly int? ObservatoryBotSeed;
++		readonly MersenneTwister observatoryBotRandom;
++		public MersenneTwister BotRandom => observatoryBotRandom ?? LocalRandom;
+ 		public LongBitSet<PlayerBitMask> AllPlayersMask = default;
+ 		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default;
+ 
+@@ -68,6 +72,7 @@
+ 		public Player LocalPlayer { get; private set; }
+ 
+ 		public event Action GameOver = () => { };
++		public event Action TickCompleted;
+ 
+ 		/// <summary>Indicates that the game has ended.</summary>
+ 		/// <remarks>Should only be set in <see cref="EndGame"/>.</remarks>
+@@ -111,6 +116,7 @@
+ 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
+ 		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
+ 
++		public bool IsOutOfSync => OrderManager.IsOutOfSync;
+ 		public bool IsReplay => OrderManager.Connection is ReplayConnection;
+ 
+ 		public bool IsLoadingGameSave => OrderManager.NetFrameNumber <= OrderManager.GameSaveLastFrame;
+@@ -197,7 +203,15 @@
+ 			Timestep = ReplayTimestep = GameSpeed.Timestep;
+ 
+ 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
+-			LocalRandom = new MersenneTwister();
++
++			// Observatory seeds the local stream and can isolate bot draws from presentation draws.
++			ObservatoryLocalSeed = Game.GetObservatorySeed(this) is int seed ? ~seed : null;
++			LocalRandom = ObservatoryLocalSeed is int localSeed ? new MersenneTwister(localSeed) : new MersenneTwister();
++			if (ObservatoryLocalSeed is int botSeed && Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_BOT_RANDOM") == "isolated")
++			{
++				ObservatoryBotSeed = botSeed;
++				observatoryBotRandom = new MersenneTwister(botSeed);
++			}
+ 
+ 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
+ 			WorldActor = CreateActor(worldActorType.ToString(), []);
+@@ -412,6 +426,7 @@
+ 
+ 		public void Tick()
+ 		{
++			var previousTick = WorldTick;
+ 			if (wasLoadingGameSave && !IsLoadingGameSave)
+ 			{
+ 				foreach (var kv in gameSaveTraitData)
+@@ -452,6 +467,9 @@
+ 
+ 			while (frameEndActions.Count != 0)
+ 				frameEndActions.Dequeue()(this);
++
++			if (WorldTick != previousTick)
++				TickCompleted?.Invoke();
+ 		}
+ 
+ 		// For things that want to update their render state once per tick, ignoring pause state
+diff --git a/OpenRA.Mods.Common/LoadScreens/BlankLoadScreen.cs b/OpenRA.Mods.Common/LoadScreens/BlankLoadScreen.cs
+--- a/OpenRA.Mods.Common/LoadScreens/BlankLoadScreen.cs
++++ b/OpenRA.Mods.Common/LoadScreens/BlankLoadScreen.cs
+@@ -68,7 +68,7 @@
+ 			// Start a map directly
+ 			if (!string.IsNullOrEmpty(Launch.Map))
+ 			{
+-				Game.LoadMap(Launch.Map);
++				Game.LoadMap(Launch.Map, Launch.ObservatorySkirmish && Game.ModData.Manifest.Id == "ra-classic");
+ 				return;
+ 			}
+ 
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/BaseBuilderBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/BaseBuilderBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/BaseBuilderBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/BaseBuilderBotModule.cs
+@@ -171,7 +171,7 @@
+ 		public CPos GetRandomBaseCenter()
+ 		{
+ 			var randomConstructionYard = ConstructionYardBuildings.Actors.Where(a => !a.IsDead)
+-				.RandomOrDefault(world.LocalRandom);
++				.RandomOrDefault(world.BotRandom);
+ 
+ 			return randomConstructionYard?.Location ?? initialBaseCenter;
+ 		}
+@@ -249,9 +249,9 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			assignRallyPointsTicks = world.LocalRandom.Next(0, Info.AssignRallyPointsInterval);
+-			checkBestResourceLocationTicks = world.LocalRandom.Next(0, Info.CheckBestResourceLocationInterval);
+-			sellRefineryTick = Info.SellRefineryInterval < 0 ? 0 : world.LocalRandom.Next(0, Info.SellRefineryInterval);
++			assignRallyPointsTicks = world.BotRandom.Next(0, Info.AssignRallyPointsInterval);
++			checkBestResourceLocationTicks = world.BotRandom.Next(0, Info.CheckBestResourceLocationInterval);
++			sellRefineryTick = Info.SellRefineryInterval < 0 ? 0 : world.BotRandom.Next(0, Info.SellRefineryInterval);
+ 		}
+ 
+ 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
+@@ -436,7 +436,7 @@
+ 				return producer.Location;
+ 			}
+ 
+-			return possibleRallyPoints.Random(world.LocalRandom);
++			return possibleRallyPoints.Random(world.BotRandom);
+ 		}
+ 
+ 		Locomotor[] LocomotorsForProducibles(Actor producer)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/BaseBuilderQueueManager.cs b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/BaseBuilderQueueManager.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/BaseBuilderQueueManager.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/BaseBuilderQueueManager.cs
+@@ -146,7 +146,7 @@
+ 
+ 			// Add a random factor so not every AI produces at the same tick early in the game.
+ 			// Minimum should not be negative as delays in HackyAI could be zero.
+-			var randomFactor = world.LocalRandom.Next(0, baseBuilder.Info.StructureProductionRandomBonusDelay);
++			var randomFactor = world.BotRandom.Next(0, baseBuilder.Info.StructureProductionRandomBonusDelay);
+ 
+ 			WaitTicks = active ? baseBuilder.Info.StructureProductionActiveDelay + randomFactor
+ 				: baseBuilder.Info.StructureProductionInactiveDelay + randomFactor;
+@@ -199,7 +199,7 @@
+ 				else
+ 				{
+ 					// Check if Building is a defense and if we should place it towards the enemy or not.
+-					if (baseBuilder.Info.DefenseTypes.Contains(actorInfo.Name) && world.LocalRandom.Next(100) < baseBuilder.Info.PlaceDefenseTowardsEnemyChance)
++					if (baseBuilder.Info.DefenseTypes.Contains(actorInfo.Name) && world.BotRandom.Next(100) < baseBuilder.Info.PlaceDefenseTowardsEnemyChance)
+ 						type = BuildingType.Defense;
+ 					else if (baseBuilder.Info.RefineryTypes.Contains(actorInfo.Name))
+ 						type = BuildingType.Refinery;
+@@ -254,9 +254,9 @@
+ 						var tolerateOnCash = playerResources.GetCashAndResources() / Math.Max(baseBuilder.Info.PerExpansionTolerateOnCash, 1);
+ 
+ 						if (numRef >= baseBuilder.Info.InititalMinimumRefineryCount + baseBuilder.Info.AdditionalMinimumRefineryCount
+-							&& numProd > 0 && numProd + numTech - baseBuilder.Info.ExpansionTolerate.Random(world.LocalRandom) - tolerateOnCash >= numRef)
++							&& numProd > 0 && numProd + numTech - baseBuilder.Info.ExpansionTolerate.Random(world.BotRandom) - tolerateOnCash >= numRef)
+ 						{
+-							var undeployEvenNoBase = numProd + numTech - baseBuilder.Info.ForceExpansionTolerate.Random(world.LocalRandom) - tolerateOnCash >= numRef;
++							var undeployEvenNoBase = numProd + numTech - baseBuilder.Info.ForceExpansionTolerate.Random(world.BotRandom) - tolerateOnCash >= numRef;
+ 
+ 							foreach (var be in baseBuilder.BaseExpansionModules)
+ 								be.UpdateExpansionParams(bot, true, undeployEvenNoBase, null);
+@@ -287,7 +287,7 @@
+ 			if (orderBy != null)
+ 				return available.MaxByOrDefault(orderBy);
+ 
+-			return available.RandomOrDefault(world.LocalRandom);
++			return available.RandomOrDefault(world.BotRandom);
+ 		}
+ 
+ 		bool HasSufficientPowerForActor(ActorInfo actorInfo)
+@@ -331,7 +331,7 @@
+ 
+ 			// Make sure that we can spend as fast as we are earning
+ 			if (baseBuilder.Info.NewProductionCashThreshold > 0 && playerResources.GetCashAndResources() > baseBuilder.Info.NewProductionCashThreshold
+-				&& world.LocalRandom.Next(100) < baseBuilder.Info.NewProductionChance)
++				&& world.BotRandom.Next(100) < baseBuilder.Info.NewProductionChance)
+ 			{
+ 				var production = GetProducibleBuilding(baseBuilder.Info.ProductionTypes, buildableThings);
+ 				if (production != null && HasSufficientPowerForActor(production))
+@@ -384,7 +384,7 @@
+ 			}
+ 
+ 			// Build everything else
+-			foreach (var frac in baseBuilder.Info.BuildingFractions.Shuffle(world.LocalRandom))
++			foreach (var frac in baseBuilder.Info.BuildingFractions.Shuffle(world.BotRandom))
+ 			{
+ 				var name = frac.Key;
+ 
+@@ -507,15 +507,15 @@
+ 							}
+ 						}
+ 						else
+-							actorVariant = world.LocalRandom.Next(buildingVariantInfo.Actors.Length + 1);
++							actorVariant = world.BotRandom.Next(buildingVariantInfo.Actors.Length + 1);
+ 					}
+ 				}
+ 				else
+ 				{
+-					cells = cells.Shuffle(world.LocalRandom);
++					cells = cells.Shuffle(world.BotRandom);
+ 
+ 					if (buildingVariantInfo?.Actors != null)
+-						actorVariant = world.LocalRandom.Next(buildingVariantInfo.Actors.Length + 1);
++						actorVariant = world.BotRandom.Next(buildingVariantInfo.Actors.Length + 1);
+ 				}
+ 
+ 				if (actorVariant != 0)
+@@ -580,7 +580,7 @@
+ 						IEnumerable<CPos> resourcesShouldCheck = null;
+ 
+ 						if (closestRefinery == null)
+-							resourcesShouldCheck = nearbyResources.Shuffle(world.LocalRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
++							resourcesShouldCheck = nearbyResources.Shuffle(world.BotRandom).Take(baseBuilder.Info.MaxResourceCellsToCheck);
+ 						else if (requestRef != null)
+ 						{
+ 							resourcesShouldCheck = nearbyResources.OrderBy(c => (c - baseBuilder.RequestedRefineries[requestRef].ResourceLoc).LengthSquared)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/MinelayerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/MinelayerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/MinelayerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/MinelayerBotModule.cs
+@@ -95,7 +95,7 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			minAssignRoleDelayTicks = world.LocalRandom.Next(0, Info.ScanTick);
++			minAssignRoleDelayTicks = world.BotRandom.Next(0, Info.ScanTick);
+ 			alertedTicks = 0;
+ 			conflictPositionLength = 0;
+ 			favoritePositionsLength = 0;
+@@ -145,7 +145,7 @@
+ 						if (enemies.Length == 0)
+ 							return;
+ 
+-						var enemy = enemies.Random(world.LocalRandom);
++						var enemy = enemies.Random(world.BotRandom);
+ 
+ 						foreach (var minelayer in minelayers)
+ 						{
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/SupportPowerDecision.cs b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/SupportPowerDecision.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/SupportPowerDecision.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/BotModuleLogic/SupportPowerDecision.cs
+@@ -117,7 +117,7 @@
+ 			return answer;
+ 		}
+ 
+-		public int GetNextScanTime(World world) { return world.LocalRandom.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
++		public int GetNextScanTime(World world) { return world.BotRandom.Next(MinimumScanTimeInterval, MaximumScanTimeInterval); }
+ 
+ 		/// <summary>Makes up part of a decision, describing how to evaluate a target.</summary>
+ 		public class Consideration
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/CaptureManagerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/CaptureManagerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/CaptureManagerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/CaptureManagerBotModule.cs
+@@ -77,7 +77,7 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			minCaptureDelayTicks = world.LocalRandom.Next(0, Info.MinimumCaptureDelay);
++			minCaptureDelayTicks = world.BotRandom.Next(0, Info.MinimumCaptureDelay);
+ 		}
+ 
+ 		void IBotTick.BotTick(IBot bot)
+@@ -120,7 +120,7 @@
+ 				return;
+ 
+ 			var randPlayer = world.Players.Where(p => !p.Spectating
+-				&& Info.CapturableRelationships.HasRelationship(player.RelationshipWith(p))).Random(world.LocalRandom);
++				&& Info.CapturableRelationships.HasRelationship(player.RelationshipWith(p))).Random(world.BotRandom);
+ 
+ 			var targetOptions = Info.CheckCaptureTargetsForVisibility
+ 				? GetVisibleActorsBelongingToPlayer(randPlayer)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/HarvesterBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/HarvesterBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/HarvesterBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/HarvesterBotModule.cs
+@@ -137,8 +137,8 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs scanning for idle harvesters on the same tick, randomize their initial scan delay.
+-			scanForIdleHarvestersTicks = world.LocalRandom.Next(Info.ScanForIdleHarvestersInterval);
+-			scanForLowEffectHarvestersTicks = world.LocalRandom.Next(Info.ScanForLowEffectHarvestersInterval);
++			scanForIdleHarvestersTicks = world.BotRandom.Next(Info.ScanForIdleHarvestersInterval);
++			scanForLowEffectHarvestersTicks = world.BotRandom.Next(Info.ScanForLowEffectHarvestersInterval);
+ 		}
+ 
+ 		void IBotTick.BotTick(IBot bot)
+@@ -173,7 +173,7 @@
+ 					var harvCountTooLow = harvsNum < Info.InitialHarvesters || harvsNum < AIUtils.CountActorByCommonName(refineries);
+ 					if (harvCountTooLow)
+ 					{
+-						var harvesterType = Info.HarvesterTypes.Random(world.LocalRandom);
++						var harvesterType = Info.HarvesterTypes.Random(world.BotRandom);
+ 						if (unitBuilder.RequestedProductionCount(bot, harvesterType) == 0)
+ 							unitBuilder.RequestUnitProduction(bot, harvesterType);
+ 					}
+@@ -292,7 +292,7 @@
+ 						var mobile = harv.TraitOrDefault<Mobile>();
+ 						if (mobile != null)
+ 						{
+-							var tcell = nearbyResources.Random(world.LocalRandom);
++							var tcell = nearbyResources.Random(world.BotRandom);
+ 							if (mobile.PathFinder.PathMightExistForLocomotorBlockedByImmovable(mobile.Locomotor, harv.Location, tcell))
+ 							{
+ 								bot.QueueOrder(new Order("Harvest", harv, Target.FromCell(world, tcell), false));
+@@ -310,7 +310,7 @@
+ 						}
+ 						else
+ 						{
+-							bot.QueueOrder(new Order("Harvest", harv, Target.FromCell(world, nearbyResources.Random(world.LocalRandom)), false));
++							bot.QueueOrder(new Order("Harvest", harv, Target.FromCell(world, nearbyResources.Random(world.BotRandom)), false));
+ 							needHarvs--;
+ 							harvestersCanAssign--;
+ 							usedHarvs.Add(harv);
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/McvExpansionManagerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/McvExpansionManagerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/McvExpansionManagerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/McvExpansionManagerBotModule.cs
+@@ -164,9 +164,9 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			scanInterval = world.LocalRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval << 1);
+-			buildMCVInterval = world.LocalRandom.Next(Info.BuildMcvInterval, Info.BuildMcvInterval << 1);
+-			moveConyardInterval = world.LocalRandom.Next(Info.MoveConyardTick, Info.MoveConyardTick << 1);
++			scanInterval = world.BotRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval << 1);
++			buildMCVInterval = world.BotRandom.Next(Info.BuildMcvInterval, Info.BuildMcvInterval << 1);
++			moveConyardInterval = world.BotRandom.Next(Info.MoveConyardTick, Info.MoveConyardTick << 1);
+ 		}
+ 
+ 		void SwitchExpansionMode(BotMcvExpansionMode nextMode)
+@@ -438,7 +438,7 @@
+ 						attraction += ((indiceSideLengthSquare >> 1) - Math.Abs(resourceCellsCount - (indiceSideLengthSquare >> 1))) >> 2;
+ 						attraction += 8 * resourceCreatorLocs.Length;
+ 
+-						var resCenter = resourceCreatorLocs.Length == 0 || world.LocalRandom.Next(2) > 0 ? resourceCellsCenter : resourceCreatorLocs.Random(world.LocalRandom);
++						var resCenter = resourceCreatorLocs.Length == 0 || world.BotRandom.Next(2) > 0 ? resourceCellsCenter : resourceCreatorLocs.Random(world.BotRandom);
+ 
+ 						attraction -= CalculateThreats(indiceSideLengthSquare, i);
+ 
+@@ -596,7 +596,7 @@
+ 			var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
+ 			if (unitBuilder == null)
+ 				return;
+-			var mcvType = Info.McvTypes.Random(world.LocalRandom);
++			var mcvType = Info.McvTypes.Random(world.BotRandom);
+ 
+ 			// Make sure we only request one MCV at a time.
+ 			if (unitBuilder.RequestedProductionCount(bot, mcvType) <= 0)
+@@ -628,7 +628,7 @@
+ 			var conyards = constructionYards.Actors
+ 				.Where(a => !a.IsDead);
+ 
+-			var moveOldConyardFirst = Info.MoveOldConyardFirst ?? world.LocalRandom.Next(2) > 0;
++			var moveOldConyardFirst = Info.MoveOldConyardFirst ?? world.BotRandom.Next(2) > 0;
+ 
+ 			if (moveOldConyardFirst)
+ 				conyards = conyards.OrderBy(a => a.ActorID);
+@@ -689,7 +689,7 @@
+ 			// When we don't have a construction yard, we notify the new location to other traits for defence,
+ 			// If not, we only notify sometimes, because we are not sure if mcv can successfully deploy at the desired location.
+ 			// TODO: This could be addressed via INotifyTransform.
+-			if (constructionYards.Actors.All(a => a.IsDead) || world.LocalRandom.Next(2) > 0)
++			if (constructionYards.Actors.All(a => a.IsDead) || world.BotRandom.Next(2) > 0)
+ 			{
+ 				foreach (var n in notifyPositionsUpdated)
+ 				{
+@@ -738,7 +738,7 @@
+ 					cells = cells.OrderBy(c => deta * (c - target).LengthSquared + theta * (c - source).LengthSquared);
+ 				}
+ 				else
+-					cells = cells.Shuffle(world.LocalRandom);
++					cells = cells.Shuffle(world.BotRandom);
+ 
+ 				CPos? bestcell = null;
+ 				foreach (var cell in cells)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/McvManagerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/McvManagerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/McvManagerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/McvManagerBotModule.cs
+@@ -54,7 +54,7 @@
+ 		public CPos GetRandomBaseCenter()
+ 		{
+ 			var randomConstructionYard = constructionYards.Actors
+-				.RandomOrDefault(world.LocalRandom);
++				.RandomOrDefault(world.BotRandom);
+ 
+ 			return randomConstructionYard?.Location ?? initialBaseCenter;
+ 		}
+@@ -91,7 +91,7 @@
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			scanInterval = world.LocalRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval * 2);
++			scanInterval = world.BotRandom.Next(Info.ScanForNewMcvInterval, Info.ScanForNewMcvInterval * 2);
+ 		}
+ 
+ 		void IBotPositionsUpdated.UpdatedBaseCenter(CPos newLocation)
+@@ -118,7 +118,7 @@
+ 				var unitBuilder = requestUnitProduction.FirstEnabledTraitOrDefault();
+ 				if (unitBuilder != null && Info.McvTypes.Count > 0 && ShouldBuildMCV())
+ 				{
+-					var mcvType = Info.McvTypes.Random(world.LocalRandom);
++					var mcvType = Info.McvTypes.Random(world.BotRandom);
+ 					if (unitBuilder.RequestedProductionCount(bot, mcvType) == 0)
+ 						unitBuilder.RequestUnitProduction(bot, mcvType);
+ 				}
+@@ -192,7 +192,7 @@
+ 				if (center != target)
+ 					cells = cells.OrderBy(c => (c - target).LengthSquared);
+ 				else
+-					cells = cells.Shuffle(world.LocalRandom);
++					cells = cells.Shuffle(world.BotRandom);
+ 
+ 				foreach (var cell in cells)
+ 					if (world.CanPlaceBuilding(cell + offset, actorInfo, bi, null))
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/PowerDownBotManager.cs b/OpenRA.Mods.Common/Traits/BotModules/PowerDownBotManager.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/PowerDownBotManager.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/PowerDownBotManager.cs
+@@ -76,7 +76,7 @@
+ 
+ 		protected override void TraitEnabled(Actor self)
+ 		{
+-			toggleTick = world.LocalRandom.Next(Info.Interval);
++			toggleTick = world.BotRandom.Next(Info.Interval);
+ 		}
+ 
+ 		// We calculate the approximate power changing if toggled on. Since we have no idea on the conditions set by users
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/ResourceMapBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/ResourceMapBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/ResourceMapBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/ResourceMapBotModule.cs
+@@ -101,7 +101,7 @@
+ 			if (firstTick)
+ 			{
+ 				resourceLayer = world.WorldActor.TraitOrDefault<IResourceLayer>();
+-				updateResourceMapInterval = world.LocalRandom.Next(Info.UpdateResourceMapInverval, Info.UpdateResourceMapInverval << 1);
++				updateResourceMapInterval = world.BotRandom.Next(Info.UpdateResourceMapInverval, Info.UpdateResourceMapInverval << 1);
+ 
+ 				if (resourceMapIndices == null && resourceLayer != null)
+ 				{
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/SquadManagerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/SquadManagerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/SquadManagerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/SquadManagerBotModule.cs
+@@ -111,7 +111,7 @@
+ 		{
+ 			var randomConstructionYard = constructionYardBuildings.Actors
+ 				.Where(a => a.Owner == Player)
+-				.RandomOrDefault(World.LocalRandom);
++				.RandomOrDefault(World.BotRandom);
+ 
+ 			return randomConstructionYard?.Location ?? initialBaseCenter;
+ 		}
+@@ -134,6 +134,7 @@
+ 		IBotPositionsUpdated[] notifyPositionsUpdated;
+ 		IBotNotifyIdleBaseUnits[] notifyIdleBaseUnits;
+ 
++		BotObservatory observatory;
+ 		List<Actor> unitsHangingAroundTheBase = [];
+ 		CPos initialBaseCenter;
+ 
+@@ -193,17 +194,18 @@
+ 		{
+ 			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
+ 			var smallFractionOfRushInterval = Info.RushInterval / 20;
+-			rushTicks = World.LocalRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
++			rushTicks = World.BotRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
+ 
+ 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
+-			assignRolesTicks = World.LocalRandom.Next(0, Info.AssignRolesInterval);
+-			attackForceTicks = World.LocalRandom.Next(0, Info.AttackForceInterval);
+-			minAttackForceDelayTicks = World.LocalRandom.Next(0, Info.MinimumAttackForceDelay);
++			assignRolesTicks = World.BotRandom.Next(0, Info.AssignRolesInterval);
++			attackForceTicks = World.BotRandom.Next(0, Info.AttackForceInterval);
++			minAttackForceDelayTicks = World.BotRandom.Next(0, Info.MinimumAttackForceDelay);
+ 		}
+ 
+ 		void IBotEnabled.BotEnabled(IBot bot)
+ 		{
+ 			this.bot = bot;
++			observatory = Player.PlayerActor.TraitOrDefault<BotObservatory>();
+ 		}
+ 
+ 		void IBotTick.BotTick(IBot bot)
+@@ -308,7 +310,13 @@
+ 		void CleanSquads()
+ 		{
+ 			foreach (var s in Squads)
+-				s.Units.RemoveWhere(unitCannotBeOrdered);
++			{
++				s.Observe(observatory, "existing_squad");
++				s.RemoveUnavailable(unitCannotBeOrdered);
++				if (!s.IsValid)
++					s.Retire();
++			}
++
+ 			Squads.RemoveAll(s => !s.IsValid);
+ 		}
+ 
+@@ -318,9 +326,10 @@
+ 			return Squads.FirstOrDefault(s => s.Type == type);
+ 		}
+ 
+-		Squad RegisterNewSquad(IBot bot, SquadType type, (Actor Actor, WVec Offset) target = default)
++		Squad RegisterNewSquad(IBot bot, SquadType type, string reason, (Actor Actor, WVec Offset) target = default)
+ 		{
+ 			var ret = new Squad(bot, this, type, target);
++			ret.Observe(observatory, reason);
+ 			Squads.Add(ret);
+ 			return ret;
+ 		}
+@@ -328,7 +337,7 @@
+ 		internal void UnregisterSquad(Squad squad)
+ 		{
+ 			activeUnits.ExceptWith(squad.Units);
+-			squad.Units.Clear();
++			squad.ReleaseUnits();
+ 
+ 			// CleanSquads will remove the squad from the Squads list.
+ 			// We can't do that here as this is designed to be called from within Squad.Update
+@@ -394,16 +403,16 @@
+ 				if (Info.AirUnitsTypes.Contains(a.Info.Name))
+ 				{
+ 					var air = GetSquadOfType(SquadType.Air);
+-					air ??= RegisterNewSquad(bot, SquadType.Air);
+-
+-					air.Units.Add(a);
++					air ??= RegisterNewSquad(bot, SquadType.Air, "air_assignment");
++
++					air.AddUnit(a, "air_assignment");
+ 				}
+ 				else if (Info.NavalUnitsTypes.Contains(a.Info.Name))
+ 				{
+ 					var ships = GetSquadOfType(SquadType.Naval);
+-					ships ??= RegisterNewSquad(bot, SquadType.Naval);
+-
+-					ships.Units.Add(a);
++					ships ??= RegisterNewSquad(bot, SquadType.Naval, "naval_assignment");
++
++					ships.AddUnit(a, "naval_assignment");
+ 				}
+ 				else
+ 					unitsHangingAroundTheBase.Add(a);
+@@ -420,18 +429,22 @@
+ 		{
+ 			// Create an attack force when we have enough units around our base.
+ 			// (don't bother leaving any behind for defense)
+-			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
+-
+-			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
+-			{
+-				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
+-
+-				attackForce.Units.UnionWith(unitsHangingAroundTheBase);
++			var randomizedSquadSize = Info.SquadSize + World.BotRandom.Next(Info.SquadSizeRandomBonus);
++
++			var available = unitsHangingAroundTheBase.Count;
++			if (available >= randomizedSquadSize)
++			{
++				var attackForce = RegisterNewSquad(bot, SquadType.Assault, "assault_threshold");
++				observatory?.SquadDecision("assault", available, randomizedSquadSize, available, "formed", attackForce.ObservatoryTrace);
++
++				attackForce.AddUnits(unitsHangingAroundTheBase, "assault_threshold");
+ 
+ 				unitsHangingAroundTheBase.Clear();
+ 				foreach (var n in notifyIdleBaseUnits)
+ 					n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+ 			}
++			else
++				observatory?.SquadDecision("assault", available, randomizedSquadSize, available, "below_threshold");
+ 		}
+ 
+ 		void TryToRushAttack(IBot bot)
+@@ -444,13 +457,20 @@
+ 					groundTroopNum += s.Units.Count;
+ 			}
+ 
++			var unassigned = unitsHangingAroundTheBase.Count;
+ 			if (groundTroopNum < Info.SquadSize)
++			{
++				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "below_threshold");
+ 				return;
+-
+-			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.LocalRandom);
++			}
++
++			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.BotRandom);
+ 
+ 			if (randomAttackableUnit == null)
++			{
++				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "no_unassigned_attacker");
+ 				return;
++			}
+ 
+ 			var allEnemyBaseBuilder = FindEnemies(
+ 				constructionYardBuildings.Actors,
+@@ -458,7 +478,10 @@
+ 				.ToList();
+ 
+ 			if (allEnemyBaseBuilder.Count == 0)
++			{
++				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "no_reachable_base");
+ 				return;
++			}
+ 
+ 			foreach (var enemyBaseBuilder in allEnemyBaseBuilder)
+ 			{
+@@ -474,7 +497,7 @@
+ 
+ 				if (AttackOrFleeFuzzy.Rush.CanAttack(unitsHangingAroundTheBase, enemies.ConvertAll(x => x.Actor)))
+ 				{
+-					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
++					var target = enemies.Count > 0 ? enemies.Random(World.BotRandom) : enemyBaseBuilder;
+ 					foreach (var s in Squads)
+ 					{
+ 						if (s.IsValid)
+@@ -482,9 +505,11 @@
+ 					}
+ 
+ 					var rush = GetSquadOfType(SquadType.Rush);
+-					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
+-
+-					rush.Units.UnionWith(unitsHangingAroundTheBase);
++					var outcome = rush == null ? "formed" : "reinforced";
++					rush ??= RegisterNewSquad(bot, SquadType.Rush, "rush_evaluation", target);
++					observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, outcome, rush.ObservatoryTrace);
++
++					rush.AddUnits(unitsHangingAroundTheBase, "rush_evaluation");
+ 					unitsHangingAroundTheBase.Clear();
+ 					foreach (var n in notifyIdleBaseUnits)
+ 						n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
+@@ -492,6 +517,8 @@
+ 					return;
+ 				}
+ 			}
++
++			observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "declined_engagement");
+ 		}
+ 
+ 		void ProtectOwn(IBot bot, Actor attacker)
+@@ -507,14 +534,14 @@
+ 			}
+ 
+ 			var protectSq = GetSquadOfType(SquadType.Protection);
+-			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
++			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, "damage_response", (attacker, WVec.Zero));
+ 
+ 			var unusedUnits = new List<Actor>();
+ 			foreach (var a in unitsHangingAroundTheBase)
+ 			{
+ 				if (a.Info.HasTraitInfo<AircraftInfo>() && !Info.AirUnitsTypes.Contains(a.Info.Name))
+ 				{
+-					protectSq.Units.Add(a);
++					protectSq.AddUnit(a, "damage_response");
+ 					continue;
+ 				}
+ 
+@@ -526,7 +553,7 @@
+ 				}
+ 
+ 				if (FindEnemies([attacker], a).Any())
+-					protectSq.Units.Add(a);
++					protectSq.AddUnit(a, "damage_response");
+ 				else
+ 					unusedUnits.Add(a);
+ 			}
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/Squad.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/Squad.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/Squad.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/Squad.cs
+@@ -48,7 +48,7 @@
+ 			Bot = bot;
+ 			SquadManager = squadManager;
+ 			World = bot.Player.PlayerActor.World;
+-			Random = World.LocalRandom;
++			Random = World.BotRandom;
+ 			Type = type;
+ 			SetActorToTarget(target);
+ 			FuzzyStateMachine = new StateMachine();
+@@ -69,6 +69,95 @@
+ 			}
+ 		}
+ 
++		BotObservatory observatory;
++		BotCombatEvent.Retreat retreat;
++		internal BotSquadTrace ObservatoryTrace { get; private set; }
++
++		internal void Observe(BotObservatory recorder, string reason)
++		{
++			if (ObservatoryTrace != null || recorder?.Recording != true)
++				return;
++
++			ObservatoryTrace = recorder.SquadCreated(Type.ToString(), reason, TargetActor);
++			if (ObservatoryTrace == null)
++				return;
++
++			observatory = recorder;
++			foreach (var unit in Units)
++				observatory.SquadMemberChanged(ObservatoryTrace, unit, true, reason);
++		}
++
++		internal void AddUnit(Actor unit, string reason)
++		{
++			if (Units.Add(unit) && ObservatoryTrace != null)
++				observatory.SquadMemberChanged(ObservatoryTrace, unit, true, reason);
++		}
++
++		internal void AddUnits(IEnumerable<Actor> units, string reason)
++		{
++			if (ObservatoryTrace == null)
++				Units.UnionWith(units);
++			else
++				foreach (var unit in units)
++					AddUnit(unit, reason);
++		}
++
++		internal void RemoveUnavailable(System.Predicate<Actor> unavailable)
++		{
++			if (ObservatoryTrace == null)
++				Units.RemoveWhere(unavailable);
++			else
++				Units.RemoveWhere(unit =>
++				{
++					if (!unavailable(unit))
++						return false;
++
++					if (unit != null)
++					{
++						var reason = unit.IsDead ? "destroyed" : unit.IsInWorld ? "owner_changed" : "left_world";
++						observatory.SquadMemberChanged(ObservatoryTrace, unit, false, reason);
++					}
++
++					return true;
++				});
++		}
++
++		internal void ReleaseUnits()
++		{
++			if (ObservatoryTrace != null)
++				foreach (var unit in Units)
++					observatory.SquadMemberChanged(ObservatoryTrace, unit, false, "released");
++
++			Units.Clear();
++		}
++
++		internal void Retire()
++		{
++			if (ObservatoryTrace != null)
++				observatory.SquadDisbanded(ObservatoryTrace);
++		}
++
++		internal void SetRetreat(string reason)
++		{
++			retreat = reason == null || ObservatoryTrace == null ? null : observatory.RetreatDecided(ObservatoryTrace, Units, reason);
++		}
++
++		internal void QueueRetreatOrder(Order order)
++		{
++			if (retreat != null && Bot is ModularBot modularBot)
++				modularBot.QueueRetreatOrder(order, retreat);
++			else
++				Bot.QueueOrder(order);
++		}
++
++		internal void QueueAttackOrder(Order order, string trigger, int? assessedEnemies = null)
++		{
++			if (Bot is ModularBot modularBot)
++				modularBot.QueueAttackOrder(order, TargetActor, ObservatoryTrace, trigger, assessedEnemies);
++			else
++				Bot.QueueOrder(order);
++		}
++
+ 		public void Update()
+ 		{
+ 			if (IsValid)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/StateMachine.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/StateMachine.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/StateMachine.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/StateMachine.cs
+@@ -20,13 +20,14 @@
+ 			currentState?.Tick(squad);
+ 		}
+ 
+-		public void ChangeState(Squad squad, IState newState)
++		public void ChangeState(Squad squad, IState newState, string retreatReason = null)
+ 		{
+ 			currentState?.Deactivate(squad);
+ 
+ 			if (newState != null)
+ 				currentState = newState;
+ 
++			squad.SetRetreat(retreatReason);
+ 			currentState?.Activate(squad);
+ 		}
+ 	}
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/AirStates.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/AirStates.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/AirStates.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/AirStates.cs
+@@ -102,7 +102,7 @@
+ 			var xoffset = map.Bounds.X;
+ 			var yoffset = map.Bounds.Y;
+ 
+-			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom).ToArray();
++			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.BotRandom).ToArray();
+ 		}
+ 
+ 		Actor FindDefenselessTarget(Squad owner)
+@@ -128,7 +128,7 @@
+ 					if (detectedEnemyTarget == null)
+ 						continue;
+ 
+-					checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
++					checkedIndex = owner.World.BotRandom.Next(airStrikeCheckIndices.Length);
+ 					return detectedEnemyTarget;
+ 				}
+ 			}
+@@ -143,7 +143,7 @@
+ 
+ 			if (ShouldFlee(owner))
+ 			{
+-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
++				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "threat_assessment");
+ 				return;
+ 			}
+ 
+@@ -174,14 +174,14 @@
+ 				owner.SetActorToTarget(closestEnemy);
+ 				if (closestEnemy.Actor == null)
+ 				{
+-					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
++					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "no_reachable_target");
+ 					return;
+ 				}
+ 			}
+ 
+ 			if (!NearToPosSafely(owner, owner.Units.ClosestToIgnoringPath(owner.TargetActor).CenterPosition))
+ 			{
+-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
++				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "unsafe_approach");
+ 				return;
+ 			}
+ 
+@@ -198,7 +198,7 @@
+ 				}
+ 
+ 				if (CanAttackTarget(a, owner.TargetActor))
+-					owner.Bot.QueueOrder(new Order("Attack", a, owner.Target, false));
++					owner.QueueAttackOrder(new Order("Attack", a, owner.Target, false), "air_target_attackable");
+ 			}
+ 		}
+ 
+@@ -223,11 +223,11 @@
+ 
+ 				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
+ 				{
+-					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
+-					continue;
+-				}
+-
+-				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
++					owner.QueueRetreatOrder(new Order("ReturnToBase", a, false));
++					continue;
++				}
++
++				owner.QueueRetreatOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+ 			}
+ 
+ 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState());
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/GroundStates.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/GroundStates.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/GroundStates.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/GroundStates.cs
+@@ -106,13 +106,14 @@
+ 
+ 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
+ 			{
+-				owner.Bot.QueueOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()));
++				owner.QueueAttackOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()),
++					"ground_engagement_approved", enemyUnits.Count);
+ 
+ 				// We have gathered sufficient units. Attack the nearest enemy unit.
+ 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState());
+ 			}
+ 			else
+-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
++				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "engagement_declined");
+ 		}
+ 
+ 		public void Deactivate(Squad owner) { }
+@@ -137,7 +138,7 @@
+ 				owner.SetActorToTarget(closestEnemy);
+ 				if (closestEnemy.Actor == null)
+ 				{
+-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
++					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "no_reachable_target");
+ 					return;
+ 				}
+ 			}
+@@ -185,11 +186,11 @@
+ 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackState());
+ 				}
+ 				else
+-					owner.Bot.QueueOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()));
++					owner.QueueAttackOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()), "continue_advance");
+ 			}
+ 
+ 			if (ShouldFlee(owner))
+-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
++				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "threat_assessment");
+ 		}
+ 
+ 		public void Deactivate(Squad owner) { }
+@@ -214,7 +215,7 @@
+ 				owner.SetActorToTarget(closestEnemy);
+ 				if (closestEnemy.Actor == null)
+ 				{
+-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
++					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "no_reachable_target");
+ 					return;
+ 				}
+ 			}
+@@ -243,10 +244,10 @@
+ 
+ 			foreach (var a in owner.Units)
+ 				if (!BusyAttack(a))
+-					owner.Bot.QueueOrder(new Order("AttackMove", a, owner.Target, false));
++					owner.QueueAttackOrder(new Order("AttackMove", a, owner.Target, false), "unit_ready_to_engage");
+ 
+ 			if (ShouldFlee(owner))
+-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
++				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "threat_assessment");
+ 		}
+ 
+ 		public void Deactivate(Squad owner) { }
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/ProtectionStates.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/ProtectionStates.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/ProtectionStates.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/ProtectionStates.cs
+@@ -39,7 +39,7 @@
+ 				owner.SetActorToTarget(target);
+ 				if (target.Actor == null)
+ 				{
+-					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState());
++					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), "no_reachable_target");
+ 					return;
+ 				}
+ 			}
+@@ -50,7 +50,7 @@
+ 			{
+ 				if (Backoff < 0)
+ 				{
+-					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState());
++					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), "lost_visibility");
+ 					Backoff = BackoffTicks;
+ 					return;
+ 				}
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/StateBase.cs b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/StateBase.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/Squads/States/StateBase.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/Squads/States/StateBase.cs
+@@ -23,7 +23,7 @@
+ 		{
+ 			var loc = RandomBuildingLocation(squad);
+ 			foreach (var a in squad.Units)
+-				squad.Bot.QueueOrder(new Order("Move", a, Target.FromCell(squad.World, loc), false));
++				squad.QueueRetreatOrder(new Order("Move", a, Target.FromCell(squad.World, loc), false));
+ 		}
+ 
+ 		protected static CPos RandomBuildingLocation(Squad squad)
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/SupportPowerBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/SupportPowerBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/SupportPowerBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/SupportPowerBotModule.cs
+@@ -169,7 +169,7 @@
+ 
+ 			// Pick a random location with above average attractiveness.
+ 			var averageAttractiveness = totalAttractiveness / suitableLocations.Count;
+-			return suitableLocations.Shuffle(world.LocalRandom)
++			return suitableLocations.Shuffle(world.BotRandom)
+ 				.First(x => x.Attractiveness >= averageAttractiveness)
+ 				.UV.ToCPos(map);
+ 		}
+diff --git a/OpenRA.Mods.Common/Traits/BotModules/UnitBuilderBotModule.cs b/OpenRA.Mods.Common/Traits/BotModules/UnitBuilderBotModule.cs
+--- a/OpenRA.Mods.Common/Traits/BotModules/UnitBuilderBotModule.cs
++++ b/OpenRA.Mods.Common/Traits/BotModules/UnitBuilderBotModule.cs
+@@ -182,7 +182,7 @@
+ 
+ 		ActorInfo ChooseRandomUnitToBuild(ProductionQueue queue)
+ 		{
+-			var buildableThings = queue.BuildableItems().Shuffle(world.LocalRandom).ToArray();
++			var buildableThings = queue.BuildableItems().Shuffle(world.BotRandom).ToArray();
+ 			if (buildableThings.Length == 0)
+ 				return null;
+ 
+diff --git a/OpenRA.Mods.Common/Traits/Player/BotCombatEvent.cs b/OpenRA.Mods.Common/Traits/Player/BotCombatEvent.cs
+new file mode 100644
+--- /dev/null
++++ b/OpenRA.Mods.Common/Traits/Player/BotCombatEvent.cs
+@@ -0,0 +1,21 @@
++#region Copyright & License Information
++/*
++ * Copyright (c) The OpenRA Developers and Contributors
++ * This file is part of OpenRA, which is free software. It is made
++ * available to you under the terms of the GNU General Public License
++ * as published by the Free Software Foundation, either version 3 of
++ * the License, or (at your option) any later version. For more
++ * information, see COPYING.
++ */
++#endregion
++
++namespace OpenRA.Mods.Common.Traits
++{
++	sealed record BotCombatEvent(int Tick, string Kind, int? SquadId, BotSquadTrace.Unit Unit = null,
++		BotSquadTrace.Unit Opponent = null, string Detail = null, int? Damage = null, int? RetreatId = null,
++		int? UnitCount = null, bool OpeningUnit = false, bool OpeningContact = false,
++		bool AfterOpeningOrder = false, bool AfterSquadOrder = false, bool FirstSquadContact = false)
++	{
++		internal sealed record Retreat(int Id, int SquadId);
++	}
++}
+diff --git a/OpenRA.Mods.Common/Traits/Player/BotObservatory.cs b/OpenRA.Mods.Common/Traits/Player/BotObservatory.cs
+new file mode 100644
+--- /dev/null
++++ b/OpenRA.Mods.Common/Traits/Player/BotObservatory.cs
+@@ -0,0 +1,423 @@
++#region Copyright & License Information
++/*
++ * Copyright (c) The OpenRA Developers and Contributors
++ * This file is part of OpenRA, which is free software. It is made
++ * available to you under the terms of the GNU General Public License
++ * as published by the Free Software Foundation, either version 3 of
++ * the License, or (at your option) any later version. For more
++ * information, see COPYING.
++ */
++#endregion
++
++using System;
++using System.Collections.Generic;
++using System.IO;
++using System.Linq;
++using System.Text.Json;
++using System.Text.Json.Serialization;
++using OpenRA.Mods.Common.Scripting;
++using OpenRA.Primitives;
++using OpenRA.Traits;
++
++namespace OpenRA.Mods.Common.Traits
++{
++	[Desc("Exports match milestones, resources and production for ModularBot players in opted-in local skirmishes.")]
++	[TraitLocation(SystemActors.Player)]
++	public sealed class BotObservatoryInfo : TraitInfo
++	{
++		public override object Create(ActorInitializer init) { return new BotObservatory(init.World); }
++	}
++
++	public sealed class BotObservatory : INotifyBuildingPlaced, INotifyOtherProduction, INotifyDamage, INotifyAppliedDamage, INotifyKilled, INotifyActorDisposing
++	{
++		static readonly JsonSerializerOptions JsonOptions = new()
++		{
++			WriteIndented = true,
++			PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
++			DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull
++		};
++		readonly World world;
++		readonly List<Milestone> events = [];
++		readonly List<BotProductionTrace> production = [];
++		readonly List<EconomySample> economy = [];
++		readonly List<BotSquadTrace> squads = [];
++		readonly List<BotSquadTrace.Decision> squadDecisions = [];
++		readonly Dictionary<uint, BotSquadTrace> activeSquads = [];
++		readonly List<BotCombatEvent> combatEvents = [];
++		readonly HashSet<(int SquadId, bool AfterOpeningOrder, bool AfterSquadOrder)> squadContacts = [];
++		readonly HashSet<uint> recordedLosses = [];
++		bool openingContactRecorded;
++		int retreatSequence;
++		readonly HashSet<uint> attackingActors = [];
++		readonly string outputDirectory;
++		readonly int selectedSpawn;
++		readonly int? tickIntervalOverride;
++		readonly int tickLimit;
++		readonly bool autoStop;
++
++		Player bot;
++		PlayerResources resources;
++		PowerManager power;
++		MatchSetup setup;
++		string path;
++		bool started;
++		bool exportFailed;
++		int? savedMilestones;
++		int squadAttackSequence;
++		Observation observation;
++
++		public BotObservatory(World world)
++		{
++			this.world = world;
++			if (!Game.IsLocalSkirmish(world))
++				return;
++
++			outputDirectory = Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_DIR");
++			if (int.TryParse(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_SPAWN"), out var spawn) && spawn > 0)
++				selectedSpawn = spawn;
++			if (!string.IsNullOrWhiteSpace(outputDirectory) && selectedSpawn > 0 &&
++				int.TryParse(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_INTERVAL"), out var interval) && interval > 0)
++				tickIntervalOverride = interval;
++
++			autoStop = selectedSpawn > 0 && Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_AUTOSTOP") == "1";
++			if (autoStop && int.TryParse(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_MAX_TICKS"), out var limit) && limit > 0)
++				tickLimit = limit;
++		}
++
++		internal int? TickIntervalOverride(Player player) => player.SpawnPoint == selectedSpawn ? tickIntervalOverride : null;
++
++		internal void Start(Player player, int interval, int quotient, string difficulty)
++		{
++			if (started || string.IsNullOrWhiteSpace(outputDirectory) || (selectedSpawn > 0 && player.SpawnPoint != selectedSpawn))
++				return;
++
++			started = true;
++			bot = player;
++			resources = bot.PlayerActor.TraitOrDefault<PlayerResources>();
++			power = bot.PlayerActor.TraitOrDefault<PowerManager>();
++			var opponents = world.Players.Where(p => !p.NonCombatant && IsEnemy(p))
++				.Select(p => $"{p.BotType ?? "human"}/{p.Faction.InternalName}/{p.SpawnPoint}")
++				.OrderBy(p => p, StringComparer.Ordinal);
++			var opponent = string.Join(", ", opponents);
++			setup = new MatchSetup(world.Map.Title, world.Map.Uid, world.LobbyInfo.GlobalSettings.RandomSeed,
++				world.ObservatoryLocalSeed, world.ObservatoryBotSeed,
++				player.Faction.InternalName, opponent.Length > 0 ? opponent : "None", player.SpawnPoint.ToStringInvariant(),
++				(int)Math.Round(1000d / world.Timestep), world.Timestep, interval, quotient,
++				string.IsNullOrEmpty(difficulty) ? "default" : difficulty, player.BotType,
++				world.LobbyInfo.GlobalSettings.LobbyOptions.ToDictionary(e => e.Key, e => e.Value.Value));
++
++			path = Path.Combine(outputDirectory, $"match-{Guid.NewGuid():N}.json");
++			observation = new Observation(world.WorldTick, "in_progress", true, tickLimit > 0 ? tickLimit : null);
++			world.TickCompleted += TickCompleted;
++			world.GameOver += GameOver;
++			Game.OnQuit += OnQuit;
++		}
++
++		void TickCompleted()
++		{
++			if (observation.StopReason != "in_progress")
++				return;
++
++			if (tickLimit > 0 && world.WorldTick >= tickLimit)
++				Finish("tick_limit");
++			else if (autoStop && tickLimit == 0 && events.Count == 4)
++				Finish("milestones_complete");
++			else if (events.Count != savedMilestones ||
++				world.WorldTick - observation.ObservedThroughTick >= BotProductionTrace.SampleInterval)
++				Save();
++		}
++
++		void GameOver()
++		{
++			var scriptFailed = world.WorldActor.TraitOrDefault<LuaScript>()?.Context?.FatalErrorOccurred == true;
++			Finish(scriptFailed ? "script_error" : world.IsOutOfSync ? "out_of_sync" : "match_ended");
++		}
++
++		void OnQuit() { Finish("client_closed"); }
++
++		void INotifyActorDisposing.Disposing(Actor self)
++		{
++			if (observation != null)
++				Finish("world_closed");
++		}
++
++		void Finish(string reason)
++		{
++			if (observation?.StopReason is not "in_progress")
++				return;
++
++			world.TickCompleted -= TickCompleted;
++			world.GameOver -= GameOver;
++			Game.OnQuit -= OnQuit;
++			Save(reason);
++			if (autoStop)
++				Game.Exit();
++		}
++
++		internal BotProductionTrace ProductionQueued(ProductionItem item)
++		{
++			// A bulk delivery has a separate lifecycle after it leaves the production queue.
++			if (!Recording || item.Queue is BulkProductionQueue)
++				return null;
++
++			var actor = world.Map.Rules.Actors[item.Item];
++			var nameKey = actor.TraitInfoOrDefault<TooltipInfo>()?.Name;
++			var name = !string.IsNullOrEmpty(nameKey) && FluentProvider.TryGetMessage(nameKey, out var display) ? display : item.Item;
++			var trace = new BotProductionTrace(production.Count + 1, item.Queue.Info.Type, item.Item, name,
++				actor.HasTraitInfo<BuildingInfo>(), item.TotalCost, world.WorldTick);
++			production.Add(trace);
++			return trace;
++		}
++
++		void SampleEconomy()
++		{
++			if (resources == null)
++				return;
++
++			foreach (var job in production)
++				job.FlushPayments(world.WorldTick);
++
++			var enabledQueues = world.ActorsWithTrait<ProductionQueue>()
++				.Where(pair => pair.Actor.Owner == bot && pair.Trait.Enabled)
++				.Select(pair => pair.Trait.Info.Type)
++				.Distinct(StringComparer.Ordinal)
++				.OrderBy(queue => queue, StringComparer.Ordinal)
++				.ToArray();
++			var sample = new EconomySample(world.WorldTick, resources.Cash, resources.Resources,
++				resources.Earned, resources.Spent, power?.PowerProvided, power?.PowerDrained,
++				production.Sum(job => (long)job.CashPaid + job.OrePaid),
++				production.Sum(job => (long)job.CashRefunded + job.OreRefunded), enabledQueues);
++			if (economy.Count > 0 && economy[^1].Tick == sample.Tick)
++				economy[^1] = sample;
++			else
++				economy.Add(sample);
++		}
++
++		internal BotSquadTrace SquadCreated(string kind, string reason, Actor target)
++		{
++			if (!Recording)
++				return null;
++
++			var squad = new BotSquadTrace(squads.Count + 1, kind, world.WorldTick, reason,
++				target == null ? null : SquadUnit(target));
++			squads.Add(squad);
++			return squad;
++		}
++
++		internal void SquadMemberChanged(BotSquadTrace squad, Actor actor, bool joined, string reason)
++		{
++			if (!Recording || actor == null)
++				return;
++
++			squad.MembershipChanges.Add(new BotSquadTrace.Membership(world.WorldTick,
++				joined ? "joined" : "left", SquadUnit(actor), reason));
++			if (joined)
++				activeSquads[actor.ActorID] = squad;
++			else if (activeSquads.GetValueOrDefault(actor.ActorID) == squad)
++				activeSquads.Remove(actor.ActorID);
++		}
++
++		internal void SquadDisbanded(BotSquadTrace squad)
++		{
++			if (Recording)
++				squad.DisbandedAt ??= world.WorldTick;
++		}
++
++		internal void SquadDecision(string kind, int available, int required, int unassigned, string outcome, BotSquadTrace squad = null)
++		{
++			if (Recording)
++				squadDecisions.Add(new BotSquadTrace.Decision(world.WorldTick, kind, available, required,
++					unassigned, outcome, squad?.Id));
++		}
++
++		static BotSquadTrace.Unit SquadUnit(Actor actor)
++		{
++			var key = actor.Info.TraitInfoOrDefault<TooltipInfo>()?.Name;
++			var name = !string.IsNullOrEmpty(key) && FluentProvider.TryGetMessage(key, out var display) && !string.IsNullOrWhiteSpace(display)
++				? display : actor.Info.Name;
++			return new BotSquadTrace.Unit(actor.ActorID, actor.Info.Name, name);
++		}
++
++		internal void OrderIssued(Order order, Actor target, BotSquadTrace.PendingAttack attack)
++		{
++			if (!Recording || target == null || !IsEnemy(target.Owner))
++				return;
++
++			if (attack?.Squad is { FirstAttack: null } squad)
++			{
++				var participants = (order.GroupedActors ?? []).Append(order.Subject)
++					.Where(IsAttacker).Distinct().Select(SquadUnit).ToArray();
++				if (participants.Length > 0)
++					squad.FirstAttack = new BotSquadTrace.Attack(++squadAttackSequence, attack.QueuedAt, world.WorldTick, order.OrderString,
++						attack.Trigger, attack.AssessedEnemies, SquadUnit(target), participants);
++			}
++
++			if (attackingActors.Count > 0)
++				return;
++
++			if (order.GroupedActors != null)
++				foreach (var actor in order.GroupedActors)
++					TrackAttacker(actor);
++
++			TrackAttacker(order.Subject);
++			if (attackingActors.Count > 0)
++				Record("attack_order");
++		}
++
++		bool IsAttacker(Actor actor) => actor != null && actor.Owner == bot && actor.IsInWorld && !actor.IsDead;
++
++		void TrackAttacker(Actor actor)
++		{
++			if (IsAttacker(actor))
++				attackingActors.Add(actor.ActorID);
++		}
++
++		bool IsEnemy(Player other) => bot.RelationshipWith(other) == PlayerRelationship.Enemy;
++
++		internal bool Recording => setup != null && !exportFailed && observation?.StopReason == "in_progress" && !world.IsGameOver;
++
++		void INotifyBuildingPlaced.BuildingPlaced(Actor self, Actor building)
++		{
++			if (Recording && building.Owner == bot &&
++				building.Info.HasTraitInfo<ProductionInfo>() && building.Info.HasTraitInfo<RallyPointInfo>())
++				Record("production_building");
++		}
++
++		void INotifyOtherProduction.UnitProducedByOther(Actor self, Actor producer, Actor produced, string productionType, TypeDictionary init)
++		{
++			if (Recording && produced.Owner == bot &&
++				!produced.Info.HasTraitInfo<BuildingInfo>() && produced.Info.HasTraitInfo<ArmamentInfo>())
++				Record("combat_unit");
++		}
++
++		void INotifyDamage.Damaged(Actor self, AttackInfo e)
++		{
++			if (Recording && e.Attacker != null && e.Damage.Value > 0 && IsEnemy(e.Attacker.Owner))
++				ObserveContact(self, e.Attacker, e.Damage.Value, "received");
++		}
++
++		void INotifyAppliedDamage.AppliedDamage(Actor self, Actor damaged, AttackInfo e)
++		{
++			if (Recording && e.Damage.Value > 0 && IsEnemy(damaged.Owner))
++				ObserveContact(self, damaged, e.Damage.Value, "dealt");
++		}
++
++		void ObserveContact(Actor unit, Actor opponent, int damage, string direction)
++		{
++			var openingUnit = attackingActors.Contains(unit.ActorID);
++			var firstOpening = openingUnit && !openingContactRecorded;
++			var squad = activeSquads.GetValueOrDefault(unit.ActorID);
++			var afterOpeningOrder = attackingActors.Count > 0;
++			var afterSquadOrder = squad?.FirstAttack != null;
++			var firstInPhase = squad != null && squadContacts.Add((squad.Id, afterOpeningOrder, afterSquadOrder));
++			if (firstOpening)
++			{
++				openingContactRecorded = true;
++				Record("enemy_contact");
++			}
++
++			if (firstOpening || firstInPhase)
++				combatEvents.Add(new BotCombatEvent(world.WorldTick, "contact", squad?.Id,
++					SquadUnit(unit), SquadUnit(opponent), direction, Damage: damage,
++					OpeningUnit: openingUnit, OpeningContact: firstOpening, AfterOpeningOrder: afterOpeningOrder,
++					AfterSquadOrder: afterSquadOrder, FirstSquadContact: firstInPhase));
++		}
++
++		void INotifyKilled.Killed(Actor self, AttackInfo e)
++		{
++			if (!Recording || self.Owner != bot || self.Info.HasTraitInfo<HuskInfo>())
++				return;
++
++			var squad = activeSquads.GetValueOrDefault(self.ActorID);
++			var openingUnit = attackingActors.Contains(self.ActorID);
++			if ((squad == null && !openingUnit && !self.Info.HasTraitInfo<IMoveInfo>()) || !recordedLosses.Add(self.ActorID))
++				return;
++
++			var attacker = e.Attacker;
++			var cause = attacker == null ? "unknown" :
++				IsEnemy(attacker.Owner) ? "enemy" :
++				bot.RelationshipWith(attacker.Owner) == PlayerRelationship.Ally ? "allied" : "other";
++			combatEvents.Add(new BotCombatEvent(world.WorldTick, "loss", squad?.Id, SquadUnit(self),
++				attacker == null ? null : SquadUnit(attacker), cause, OpeningUnit: openingUnit,
++				AfterOpeningOrder: attackingActors.Count > 0));
++			activeSquads.Remove(self.ActorID);
++		}
++
++		internal BotCombatEvent.Retreat RetreatDecided(BotSquadTrace squad, IEnumerable<Actor> units, string reason)
++		{
++			if (!Recording)
++				return null;
++
++			var count = 0;
++			var openingUnit = false;
++			foreach (var unit in units)
++			{
++				count++;
++				openingUnit |= attackingActors.Contains(unit.ActorID);
++			}
++
++			var id = ++retreatSequence;
++			combatEvents.Add(new BotCombatEvent(world.WorldTick, "retreat_decided", squad.Id,
++				Detail: reason, RetreatId: id, UnitCount: count, OpeningUnit: openingUnit,
++				AfterOpeningOrder: attackingActors.Count > 0));
++			return new BotCombatEvent.Retreat(id, squad.Id);
++		}
++
++		internal void RetreatOrderIssued(Order order, BotCombatEvent.Retreat retreat)
++		{
++			if (!Recording || !IsAttacker(order.Subject))
++				return;
++
++			combatEvents.Add(new BotCombatEvent(world.WorldTick, "retreat_order", retreat.SquadId,
++				SquadUnit(order.Subject), Detail: order.OrderString, RetreatId: retreat.Id,
++				OpeningUnit: attackingActors.Contains(order.Subject.ActorID), AfterOpeningOrder: attackingActors.Count > 0));
++		}
++
++		void Record(string type)
++		{
++			if (events.Exists(e => e.Type == type))
++				return;
++
++			events.Add(new Milestone(type, world.WorldTick));
++		}
++
++		void Save(string reason = "in_progress")
++		{
++			observation = new Observation(world.WorldTick, reason, true, tickLimit > 0 ? tickLimit : null);
++			if (exportFailed)
++				return;
++
++			try
++			{
++				SampleEconomy();
++				Directory.CreateDirectory(outputDirectory);
++				var ledger = resources == null ? null : new EconomyTrace(BotProductionTrace.SampleInterval, economy, production);
++				var data = new MatchLog(1, $"{bot.BotType} · spawn {setup.Spawn} · interval {setup.BotTickInterval}", setup, events, observation, ledger,
++					new SquadTimeline(squads, squadDecisions), new CombatTimeline(combatEvents));
++				var temporaryPath = path + ".tmp";
++				using (var stream = File.Create(temporaryPath))
++					JsonSerializer.Serialize(stream, data, JsonOptions);
++
++				File.Move(temporaryPath, path, true);
++				savedMilestones = events.Count;
++			}
++			catch (Exception e) when (e is IOException or UnauthorizedAccessException or ArgumentException or NotSupportedException)
++			{
++				exportFailed = true;
++				Log.Write("debug", $"Bot Observatory could not write {path} ({e.Message}).");
++			}
++		}
++
++		sealed record MatchLog(int Version, string Label, MatchSetup Setup, List<Milestone> Events, Observation Observation,
++			EconomyTrace Economy, SquadTimeline SquadTimeline, CombatTimeline CombatTimeline);
++		sealed record CombatTimeline(List<BotCombatEvent> Events);
++		sealed record SquadTimeline(List<BotSquadTrace> Squads, List<BotSquadTrace.Decision> Decisions);
++		sealed record EconomyTrace(int SampleEveryTicks, List<EconomySample> Samples, List<BotProductionTrace> Jobs);
++		sealed record EconomySample(int Tick, int Cash, int Ore, int Earned, int NetSpent, int? PowerProvided, int? PowerDrained,
++			long ProductionPaid, long ProductionRefunded, string[] EnabledQueues);
++		sealed record Observation(int ObservedThroughTick, string StopReason, bool Exact, int? TickLimit);
++		sealed record MatchSetup(string Map, string MapUid, int Seed, int? LocalSeed, int? BotRandomSeed, string Faction, string Opponent, string Spawn,
++			int TickRate, int TimestepMs, int BotTickInterval, int BotOrderQuotient, string Difficulty, string BotType, Dictionary<string, string> LobbyOptions);
++		sealed record Milestone(string Type, int Tick);
++	}
++}
+diff --git a/OpenRA.Mods.Common/Traits/Player/BotProductionTrace.cs b/OpenRA.Mods.Common/Traits/Player/BotProductionTrace.cs
+new file mode 100644
+--- /dev/null
++++ b/OpenRA.Mods.Common/Traits/Player/BotProductionTrace.cs
+@@ -0,0 +1,98 @@
++#region Copyright & License Information
++/*
++ * Copyright (c) The OpenRA Developers and Contributors
++ * This file is part of OpenRA, which is free software. It is made
++ * available to you under the terms of the GNU General Public License
++ * as published by the Free Software Foundation, either version 3 of
++ * the License, or (at your option) any later version. For more
++ * information, see COPYING.
++ */
++#endregion
++
++using System.Collections.Generic;
++
++namespace OpenRA.Mods.Common.Traits
++{
++	sealed class BotProductionTrace(int id, string queue, string item, string name, bool isBuilding, int cost, int queuedAt)
++	{
++		public const int SampleInterval = 25;
++
++		public int Id { get; } = id;
++		public string Queue { get; } = queue;
++		public string Item { get; } = item;
++		public string Name { get; } = name;
++		public bool IsBuilding { get; } = isBuilding;
++		public int Cost { get; } = cost;
++		public int QueuedAt { get; } = queuedAt;
++		public int? StartedAt { get; private set; }
++		public int? ReadyAt { get; private set; }
++		public int? CompletedAt { get; private set; }
++		public int? CancelledAt { get; private set; }
++		public string CancellationReason { get; private set; }
++		public int CashPaid { get; private set; }
++		public int OrePaid { get; private set; }
++		public int CashRefunded { get; private set; }
++		public int OreRefunded { get; private set; }
++		public List<Payment> Payments { get; } = [];
++		public List<FundingWait> FundingWaits { get; } = [];
++		public List<PauseChange> Pauses { get; } = [];
++
++		int? firstPendingPaymentTick;
++		int pendingCash;
++		int pendingOre;
++
++		internal void Start(int tick) { StartedAt = tick; }
++		internal void Ready(int tick) { ReadyAt = tick; }
++		internal void Complete(int tick) { CompletedAt = tick; }
++		internal void Pause(int tick, bool paused) { Pauses.Add(new PauseChange(tick, paused)); }
++
++		internal void Paid(int tick, int cash, int ore)
++		{
++			ResumeFunding(tick);
++			if (cash == 0 && ore == 0)
++				return;
++
++			CashPaid += cash;
++			OrePaid += ore;
++			firstPendingPaymentTick ??= tick;
++			pendingCash += cash;
++			pendingOre += ore;
++		}
++
++		internal void FlushPayments(int sampleTick)
++		{
++			if (firstPendingPaymentTick is not int firstTick)
++				return;
++
++			Payments.Add(new Payment(firstTick, sampleTick, pendingCash, pendingOre));
++			firstPendingPaymentTick = null;
++			pendingCash = 0;
++			pendingOre = 0;
++		}
++
++		internal void WaitForFunds(int tick, int required, long available)
++		{
++			if (FundingWaits.Count == 0 || FundingWaits[^1].EndTick != null)
++				FundingWaits.Add(new FundingWait(tick, null, required, available));
++		}
++
++		void ResumeFunding(int tick)
++		{
++			if (FundingWaits.Count > 0 && FundingWaits[^1].EndTick == null)
++				FundingWaits[^1] = FundingWaits[^1] with { EndTick = tick };
++		}
++
++		internal void Cancel(int tick, string reason, int cash, int ore)
++		{
++			ResumeFunding(tick);
++			CancelledAt = tick;
++			CancellationReason = reason;
++			CashRefunded = cash;
++			OreRefunded = ore;
++		}
++
++		internal sealed record Payment(int FirstTick, int Tick, int Cash, int Ore);
++		internal sealed record FundingWait(int StartTick, int? EndTick, int Required, long Available);
++		internal sealed record PauseChange(int Tick, bool Paused);
++	}
++}
+diff --git a/OpenRA.Mods.Common/Traits/Player/BotSquadTrace.cs b/OpenRA.Mods.Common/Traits/Player/BotSquadTrace.cs
+new file mode 100644
+--- /dev/null
++++ b/OpenRA.Mods.Common/Traits/Player/BotSquadTrace.cs
+@@ -0,0 +1,35 @@
++#region Copyright & License Information
++/*
++ * Copyright (c) The OpenRA Developers and Contributors
++ * This file is part of OpenRA, which is free software. It is made
++ * available to you under the terms of the GNU General Public License
++ * as published by the Free Software Foundation, either version 3 of
++ * the License, or (at your option) any later version. For more
++ * information, see COPYING.
++ */
++#endregion
++
++using System.Collections.Generic;
++
++namespace OpenRA.Mods.Common.Traits
++{
++	sealed class BotSquadTrace(int id, string kind, int createdAt, string reason, BotSquadTrace.Unit initialTarget)
++	{
++		public int Id { get; } = id;
++		public string Kind { get; } = kind;
++		public int CreatedAt { get; } = createdAt;
++		public string Reason { get; } = reason;
++		public Unit InitialTarget { get; } = initialTarget;
++		public int? DisbandedAt { get; set; }
++		public List<Membership> MembershipChanges { get; } = [];
++		public Attack FirstAttack { get; set; }
++
++		internal sealed record Unit(uint Id, string Type, string Name);
++		internal sealed record Membership(int Tick, string Action, Unit Unit, string Reason);
++		internal sealed record Attack(int Sequence, int QueuedAt, int IssuedAt, string Order, string Trigger,
++			int? AssessedEnemies, Unit Target, Unit[] Units);
++		internal sealed record Decision(int Tick, string Kind, int Available, int Required,
++			int Unassigned, string Outcome, int? SquadId);
++		internal sealed record PendingAttack(BotSquadTrace Squad, int QueuedAt, string Trigger, int? AssessedEnemies);
++	}
++}
+diff --git a/OpenRA.Mods.Common/Traits/Player/ModularBot.cs b/OpenRA.Mods.Common/Traits/Player/ModularBot.cs
+--- a/OpenRA.Mods.Common/Traits/Player/ModularBot.cs
++++ b/OpenRA.Mods.Common/Traits/Player/ModularBot.cs
+@@ -46,9 +46,11 @@
+ 
+ 		readonly ModularBotInfo info;
+ 		readonly World world;
+-		readonly Queue<Order> orders = [];
++		readonly Queue<(Order Order, Actor OffensiveTarget, BotSquadTrace.PendingAttack Attack, BotCombatEvent.Retreat Retreat)> orders = [];
+ 
+ 		Player player;
++		BotObservatory observatory;
++
+ 		// Agentic Gemini 4 Hydrogen High
+ 		CustomDifficultyRules difficultyRules;
+ 
+@@ -73,7 +75,9 @@
+ 				return;
+ 
+ 			IsEnabled = true;
++			observatory = p.PlayerActor.TraitOrDefault<BotObservatory>();
+ 			player = p;
++
+ 			// Agentic Gemini 4 Hydrogen High
+ 			difficultyRules = world.WorldActor.TraitOrDefault<CustomDifficultyRules>();
+ 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
+@@ -84,7 +88,19 @@
+ 
+ 		void IBot.QueueOrder(Order order)
+ 		{
+-			orders.Enqueue(order);
++			orders.Enqueue((order, null, null, null));
++		}
++
++		internal void QueueAttackOrder(Order order, Actor target, BotSquadTrace squad, string trigger, int? assessedEnemies)
++		{
++			var attack = squad is { FirstAttack: null }
++				? new BotSquadTrace.PendingAttack(squad, world.WorldTick, trigger, assessedEnemies) : null;
++			orders.Enqueue((order, target, attack, null));
++		}
++
++		internal void QueueRetreatOrder(Order order, BotCombatEvent.Retreat retreat)
++		{
++			orders.Enqueue((order, null, null, retreat));
+ 		}
+ 
+ 		void ITick.Tick(Actor self)
+@@ -94,7 +110,9 @@
+ 
+ 			// Agentic Gemini 4 Hydrogen High
+ 			var diffMods = difficultyRules?.GetModifiers(player);
+-			var tickInterval = Math.Max(1, diffMods?.BotTickInterval ?? 1);
++			var tickInterval = observatory?.TickIntervalOverride(player) ?? Math.Max(1, diffMods?.BotTickInterval ?? 1);
++			var orderQuotient = diffMods != null && diffMods.BotOrderQuotient > 0 ? diffMods.BotOrderQuotient : info.MinOrderQuotientPerTick;
++			observatory?.Start(player, tickInterval, orderQuotient, difficultyRules?.GetPlayerPresetName(player));
+ 			if (tickInterval == 1 || self.World.WorldTick % tickInterval == 0)
+ 			{
+ 				using (new PerfSample("bot_tick"))
+@@ -108,10 +126,15 @@
+ 				}
+ 			}
+ 
+-			var orderQuotient = diffMods != null && diffMods.BotOrderQuotient > 0 ? diffMods.BotOrderQuotient : info.MinOrderQuotientPerTick;
+ 			var ordersToIssueThisTick = Math.Min((orders.Count + orderQuotient - 1) / orderQuotient, orders.Count);
+ 			for (var i = 0; i < ordersToIssueThisTick; i++)
+-				world.IssueOrder(orders.Dequeue());
++			{
++				var (order, offensiveTarget, attack, retreat) = orders.Dequeue();
++				world.IssueOrder(order);
++				observatory?.OrderIssued(order, offensiveTarget, attack);
++				if (retreat != null)
++					observatory?.RetreatOrderIssued(order, retreat);
++			}
+ 		}
+ 
+ 		void INotifyDamage.Damaged(Actor self, AttackInfo e)
+diff --git a/OpenRA.Mods.Common/Traits/Player/PlayerResources.cs b/OpenRA.Mods.Common/Traits/Player/PlayerResources.cs
+--- a/OpenRA.Mods.Common/Traits/Player/PlayerResources.cs
++++ b/OpenRA.Mods.Common/Traits/Player/PlayerResources.cs
+@@ -97,6 +97,8 @@
+ 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
+ 		}
+ 
++		internal BotObservatory Observatory => owner.PlayerActor.TraitOrDefault<BotObservatory>();
++
+ 		[VerifySync]
+ 		public int Cash;
+ 
+diff --git a/OpenRA.Mods.Common/Traits/Player/ProductionQueue.cs b/OpenRA.Mods.Common/Traits/Player/ProductionQueue.cs
+--- a/OpenRA.Mods.Common/Traits/Player/ProductionQueue.cs
++++ b/OpenRA.Mods.Common/Traits/Player/ProductionQueue.cs
+@@ -187,19 +187,31 @@
+ 
+ 		protected void ClearQueue()
+ 		{
+-			// Refund the current item
+ 			foreach (var item in Queue)
+-			{
+-				if (item.ResourcesPaid > 0)
+-				{
+-					playerResources.RefundResources(item.ResourcesPaid);
+-					item.RemainingCost += item.ResourcesPaid;
+-				}
+-
+-				playerResources.RefundCash(item.TotalCost - item.RemainingCost);
+-			}
++				RefundAndCancel(item, "queue_cleared");
+ 
+ 			Queue.Clear();
++		}
++
++		void RefundAndCancel(ProductionItem item, string reason)
++		{
++			var cashBefore = playerResources.Cash;
++			var oreBefore = playerResources.Resources;
++			if (item.ResourcesPaid > 0)
++			{
++				playerResources.RefundResources(item.ResourcesPaid);
++				item.RemainingCost += item.ResourcesPaid;
++			}
++
++			playerResources.RefundCash(item.TotalCost - item.RemainingCost);
++			item.ObservatoryTrace?.Cancel(Actor.World.WorldTick, reason,
++				playerResources.Cash - cashBefore, playerResources.Resources - oreBefore);
++		}
++
++		void ObserveQueued(ProductionItem item, int cash = 0, int ore = 0)
++		{
++			item.ObservatoryTrace = playerResources.Observatory?.ProductionQueued(item);
++			item.ObservatoryTrace?.Paid(Actor.World.WorldTick, cash, ore);
+ 		}
+ 
+ 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
+@@ -373,7 +385,7 @@
+ 
+ 			var buildableNames = BuildableItems().Select(b => b.Name).ToHashSet();
+ 
+-			// EndProduction removes the item from the queue, so we enumerate
++			// RemoveProduction removes the item from the queue, so we enumerate
+ 			// by index in reverse to avoid issues with index reassignment
+ 			var cancelledAnItem = false;
+ 			for (var i = Queue.Count - 1; i >= 0; i--)
+@@ -381,16 +393,8 @@
+ 				if (buildableNames.Contains(Queue[i].Item))
+ 					continue;
+ 
+-				// Refund spent resources
+-				if (Queue[i].ResourcesPaid > 0)
+-				{
+-					playerResources.RefundResources(Queue[i].ResourcesPaid);
+-					Queue[i].RemainingCost += Queue[i].ResourcesPaid;
+-				}
+-
+-				// Refund what's been paid so far
+-				playerResources.RefundCash(Queue[i].TotalCost - Queue[i].RemainingCost);
+-				EndProduction(Queue[i]);
++				RefundAndCancel(Queue[i], "prerequisite_lost");
++				RemoveProduction(Queue[i]);
+ 				cancelledAnItem = true;
+ 			}
+ 
+@@ -589,19 +593,16 @@
+ 				{
+ 					item.Infinite = false;
+ 					for (var i = 1; i < Info.InfiniteBuildLimit; i++)
+-						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete));
++					{
++						var replacement = new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete);
++						Queue.Add(replacement);
++						ObserveQueued(replacement);
++					}
+ 				}
+ 				else
+ 				{
+-					// Refund what has been paid
+-					if (item.ResourcesPaid > 0)
+-					{
+-						playerResources.RefundResources(item.ResourcesPaid);
+-						item.RemainingCost += item.ResourcesPaid;
+-					}
+-
+-					playerResources.RefundCash(item.TotalCost - item.RemainingCost);
+-					EndProduction(item);
++					RefundAndCancel(item, "cancelled");
++					RemoveProduction(item);
+ 				}
+ 
+ 				return true;
+@@ -612,14 +613,26 @@
+ 
+ 		public void EndProduction(ProductionItem item)
+ 		{
++			item.ObservatoryTrace?.Complete(Actor.World.WorldTick);
++			RemoveProduction(item);
++		}
++
++		void RemoveProduction(ProductionItem item)
++		{
+ 			Queue.Remove(item);
+ 
+ 			if (item.Infinite)
+-				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true });
++			{
++				var replacement = new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true };
++				Queue.Add(replacement);
++				ObserveQueued(replacement);
++			}
+ 		}
+ 
+ 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)
+ 		{
++			var cashBefore = playerResources.Cash;
++			var oreBefore = playerResources.Resources;
+ 			if (Info.PayUpFront)
+ 			{
+ 				if (playerResources.Resources > 0 && playerResources.Resources <= item.TotalCost)
+@@ -638,6 +651,7 @@
+ 			else
+ 				Queue.Add(item);
+ 
++			ObserveQueued(item, cashBefore - playerResources.Cash, oreBefore - playerResources.Resources);
+ 			if (Info.InfiniteBuildLimit < 0)
+ 				return;
+ 
+@@ -650,15 +664,8 @@
+ 
+ 			for (var i = 1; i < queued.Count; i++)
+ 			{
+-				// Refund what has been paid
+-				if (queued[i].ResourcesPaid > 0)
+-				{
+-					playerResources.RefundResources(queued[i].ResourcesPaid);
+-					queued[i].RemainingCost += queued[i].ResourcesPaid;
+-				}
+-
+-				playerResources.RefundCash(queued[i].TotalCost - queued[i].RemainingCost);
+-				EndProduction(queued[i]);
++				RefundAndCancel(queued[i], "merged_into_repeat");
++				RemoveProduction(queued[i]);
+ 			}
+ 		}
+ 
+@@ -735,6 +742,7 @@
+ 		public int Slowdown { get; private set; }
+ 		public bool Infinite { get; set; }
+ 		public int BuildPaletteOrder { get; }
++		internal BotProductionTrace ObservatoryTrace { get; set; }
+ 
+ 		readonly ActorInfo ai;
+ 		readonly BuildableInfo bi;
+@@ -763,6 +771,7 @@
+ 				if (time > 0)
+ 					RemainingTime = TotalTime = time;
+ 				Started = true;
++				ObservatoryTrace?.Start(Queue.Actor.World.WorldTick);
+ 			}
+ 
+ 			if (Done)
+@@ -792,7 +801,7 @@
+ 					ResourcesPaid += pr.Resources;
+ 				else if (pr.Resources > costThisFrame)
+ 					ResourcesPaid += costThisFrame;
+-				if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
++				if (costThisFrame != 0 && !TryPay(pr, costThisFrame))
+ 				{
+ 					ResourcesPaid -= pr.Resources;
+ 					return;
+@@ -806,8 +815,33 @@
+ 				return;
+ 
+ 			Done = true;
+-		}
+-
+-		public void Pause(bool paused) { Paused = paused; }
++			ObservatoryTrace?.Ready(Queue.Actor.World.WorldTick);
++		}
++
++		bool TryPay(PlayerResources resources, int amount)
++		{
++			if (ObservatoryTrace == null)
++				return resources.TakeCash(amount, true);
++
++			var cashBefore = resources.Cash;
++			var oreBefore = resources.Resources;
++			var tick = Queue.Actor.World.WorldTick;
++			if (!resources.TakeCash(amount, true))
++			{
++				ObservatoryTrace.WaitForFunds(tick, amount, (long)cashBefore + oreBefore);
++				return false;
++			}
++
++			ObservatoryTrace.Paid(tick, cashBefore - resources.Cash, oreBefore - resources.Resources);
++			return true;
++		}
++
++		public void Pause(bool paused)
++		{
++			if (Paused != paused)
++				ObservatoryTrace?.Pause(Queue.Actor.World.WorldTick, paused);
++
++			Paused = paused;
++		}
+ 	}
+ }
+diff --git a/mods/ra-classic/rules/classic-ai.yaml b/mods/ra-classic/rules/classic-ai.yaml
+--- a/mods/ra-classic/rules/classic-ai.yaml
++++ b/mods/ra-classic/rules/classic-ai.yaml
+@@ -75,6 +75,7 @@
+ 					BotOrderQuotient: 0
+ 
+ Player:
++	BotObservatory:
+ 	SupportPowerBotModule:
+ 		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && (!classic-ai-override || !classic-easy-ai)
+ 	PowerDownBotModule:

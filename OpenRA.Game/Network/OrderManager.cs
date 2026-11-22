@@ -89,8 +89,8 @@ namespace OpenRA.Network
 				return;
 
 			syncReport.DumpSyncReport(frame);
-			World.OutOfSync();
 			IsOutOfSync = true;
+			World.OutOfSync();
 
 			TextNotificationsManager.AddSystemLine(DesyncCompareLogs, "frame", frame);
 		}

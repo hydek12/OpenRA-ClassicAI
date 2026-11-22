@@ -1,0 +1,39 @@
+Skirmish@ra-classic:
+	Map: 00cf9abbdcb30fdffbda26eab849478b9278dc1f
+	Options:
+		explored: False
+		fog: True
+		startingcash: 5000
+		cheats: False
+		bounty: False
+		factundeploy: True
+		reusable-engineers: False
+		crates: False
+		allybuild: True
+		buildradius: True
+		shortgame: True
+		techlevel: unrestricted
+		gamespeed: fastest
+		separateteamspawns: True
+		startingunits: none
+		timelimit: 0
+		custom-difficulty: classic-normal
+	Player:
+		Color: 3520C8
+		Faction: england
+		SpawnPoint: 0
+		Team: 0
+		Handicap: 0
+	Bots:
+		rush: Multi0
+			Color: C82020
+			Faction: england
+			SpawnPoint: 1
+			Team: 0
+			Handicap: 0
+		normal: Multi1
+			Color: 30A0FF
+			Faction: russia
+			SpawnPoint: 2
+			Team: 0
+			Handicap: 0

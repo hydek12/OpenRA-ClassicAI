@@ -97,6 +97,8 @@ namespace OpenRA.Mods.Common.Traits
 			lastNotificationTime = -Info.InsufficientFundsNotificationInterval;
 		}
 
+		internal BotObservatory Observatory => owner.PlayerActor.TraitOrDefault<BotObservatory>();
+
 		[VerifySync]
 		public int Cash;
 

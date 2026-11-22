@@ -1,0 +1,12 @@
+World:
+	LuaScript:
+		Scripts: opponent.lua
+Player:
+	# Keep the simulation open for the entire measurement window.
+	-ConquestVictoryConditions:
+	DummyBot@Observatory:
+		Type: observatory-fixed
+		Name: bot-observatory-fixed
+	SquadManagerBotModule@classic-normal:
+		SquadSize: 6
+		SquadSizeRandomBonus: 0

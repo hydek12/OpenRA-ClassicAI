@@ -116,6 +116,7 @@ namespace OpenRA.Server
 
 		public readonly MersenneTwister Random = new();
 		public readonly ServerType Type;
+		internal readonly int? ObservatorySeed;
 		public bool IsMultiplayer => Type == ServerType.Dedicated || Type == ServerType.Multiplayer;
 
 		public readonly List<Connection> Conns = [];
@@ -304,7 +305,12 @@ namespace OpenRA.Server
 
 			playerDatabase = modData.GetOrCreate<PlayerDatabase>();
 
-			randomSeed = (int)DateTime.Now.ToBinary();
+			if (type == ServerType.Skirmish && modData.Manifest.Id == "ra-classic" &&
+				!string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_DIR")) &&
+				int.TryParse(Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_SEED"), out var observatorySeed))
+				ObservatorySeed = observatorySeed;
+
+			randomSeed = ObservatorySeed ?? (int)DateTime.Now.ToBinary();
 
 			if (IsMultiplayer && settings.EnableGeoIP)
 				GeoIP.Initialize();

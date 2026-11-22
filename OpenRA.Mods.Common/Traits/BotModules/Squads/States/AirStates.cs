@@ -102,7 +102,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			var xoffset = map.Bounds.X;
 			var yoffset = map.Bounds.Y;
 
-			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.LocalRandom).ToArray();
+			airStrikeCheckIndices ??= Exts.MakeArray(columnCount * rowCount, i => i).Shuffle(owner.World.BotRandom).ToArray();
 		}
 
 		Actor FindDefenselessTarget(Squad owner)
@@ -128,7 +128,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					if (detectedEnemyTarget == null)
 						continue;
 
-					checkedIndex = owner.World.LocalRandom.Next(airStrikeCheckIndices.Length);
+					checkedIndex = owner.World.BotRandom.Next(airStrikeCheckIndices.Length);
 					return detectedEnemyTarget;
 				}
 			}
@@ -143,7 +143,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (ShouldFlee(owner))
 			{
-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "threat_assessment");
 				return;
 			}
 
@@ -174,14 +174,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget(closestEnemy);
 				if (closestEnemy.Actor == null)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
+					owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "no_reachable_target");
 					return;
 				}
 			}
 
 			if (!NearToPosSafely(owner, owner.Units.ClosestToIgnoringPath(owner.TargetActor).CenterPosition))
 			{
-				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState());
+				owner.FuzzyStateMachine.ChangeState(owner, new AirFleeState(), "unsafe_approach");
 				return;
 			}
 
@@ -198,7 +198,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				}
 
 				if (CanAttackTarget(a, owner.TargetActor))
-					owner.Bot.QueueOrder(new Order("Attack", a, owner.Target, false));
+					owner.QueueAttackOrder(new Order("Attack", a, owner.Target, false), "air_target_attackable");
 			}
 		}
 
@@ -223,11 +223,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 				if (!ReloadsAutomatically(ammoPools, a.TraitOrDefault<Rearmable>()) && !FullAmmo(ammoPools))
 				{
-					owner.Bot.QueueOrder(new Order("ReturnToBase", a, false));
+					owner.QueueRetreatOrder(new Order("ReturnToBase", a, false));
 					continue;
 				}
 
-				owner.Bot.QueueOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
+				owner.QueueRetreatOrder(new Order("Move", a, Target.FromCell(owner.World, RandomBuildingLocation(owner)), false));
 			}
 
 			owner.FuzzyStateMachine.ChangeState(owner, new AirIdleState());

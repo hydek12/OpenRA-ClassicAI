@@ -31,6 +31,9 @@ namespace OpenRA
 		[Desc("Automatically start playing the given map.")]
 		public string Map;
 
+		[Desc("Start Launch.Map as a local Red Alert Classic skirmish using the saved skirmish profile.")]
+		public bool ObservatorySkirmish;
+
 		public LaunchArguments(Arguments args)
 		{
 			if (args == null)

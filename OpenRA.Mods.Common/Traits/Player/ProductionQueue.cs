@@ -187,19 +187,31 @@ namespace OpenRA.Mods.Common.Traits
 
 		protected void ClearQueue()
 		{
-			// Refund the current item
 			foreach (var item in Queue)
-			{
-				if (item.ResourcesPaid > 0)
-				{
-					playerResources.RefundResources(item.ResourcesPaid);
-					item.RemainingCost += item.ResourcesPaid;
-				}
-
-				playerResources.RefundCash(item.TotalCost - item.RemainingCost);
-			}
+				RefundAndCancel(item, "queue_cleared");
 
 			Queue.Clear();
+		}
+
+		void RefundAndCancel(ProductionItem item, string reason)
+		{
+			var cashBefore = playerResources.Cash;
+			var oreBefore = playerResources.Resources;
+			if (item.ResourcesPaid > 0)
+			{
+				playerResources.RefundResources(item.ResourcesPaid);
+				item.RemainingCost += item.ResourcesPaid;
+			}
+
+			playerResources.RefundCash(item.TotalCost - item.RemainingCost);
+			item.ObservatoryTrace?.Cancel(Actor.World.WorldTick, reason,
+				playerResources.Cash - cashBefore, playerResources.Resources - oreBefore);
+		}
+
+		void ObserveQueued(ProductionItem item, int cash = 0, int ore = 0)
+		{
+			item.ObservatoryTrace = playerResources.Observatory?.ProductionQueued(item);
+			item.ObservatoryTrace?.Paid(Actor.World.WorldTick, cash, ore);
 		}
 
 		void INotifyOwnerChanged.OnOwnerChanged(Actor self, Player oldOwner, Player newOwner)
@@ -373,7 +385,7 @@ namespace OpenRA.Mods.Common.Traits
 
 			var buildableNames = BuildableItems().Select(b => b.Name).ToHashSet();
 
-			// EndProduction removes the item from the queue, so we enumerate
+			// RemoveProduction removes the item from the queue, so we enumerate
 			// by index in reverse to avoid issues with index reassignment
 			var cancelledAnItem = false;
 			for (var i = Queue.Count - 1; i >= 0; i--)
@@ -381,16 +393,8 @@ namespace OpenRA.Mods.Common.Traits
 				if (buildableNames.Contains(Queue[i].Item))
 					continue;
 
-				// Refund spent resources
-				if (Queue[i].ResourcesPaid > 0)
-				{
-					playerResources.RefundResources(Queue[i].ResourcesPaid);
-					Queue[i].RemainingCost += Queue[i].ResourcesPaid;
-				}
-
-				// Refund what's been paid so far
-				playerResources.RefundCash(Queue[i].TotalCost - Queue[i].RemainingCost);
-				EndProduction(Queue[i]);
+				RefundAndCancel(Queue[i], "prerequisite_lost");
+				RemoveProduction(Queue[i]);
 				cancelledAnItem = true;
 			}
 
@@ -589,19 +593,16 @@ namespace OpenRA.Mods.Common.Traits
 				{
 					item.Infinite = false;
 					for (var i = 1; i < Info.InfiniteBuildLimit; i++)
-						Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete));
+					{
+						var replacement = new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete);
+						Queue.Add(replacement);
+						ObserveQueued(replacement);
+					}
 				}
 				else
 				{
-					// Refund what has been paid
-					if (item.ResourcesPaid > 0)
-					{
-						playerResources.RefundResources(item.ResourcesPaid);
-						item.RemainingCost += item.ResourcesPaid;
-					}
-
-					playerResources.RefundCash(item.TotalCost - item.RemainingCost);
-					EndProduction(item);
+					RefundAndCancel(item, "cancelled");
+					RemoveProduction(item);
 				}
 
 				return true;
@@ -612,14 +613,26 @@ namespace OpenRA.Mods.Common.Traits
 
 		public void EndProduction(ProductionItem item)
 		{
+			item.ObservatoryTrace?.Complete(Actor.World.WorldTick);
+			RemoveProduction(item);
+		}
+
+		void RemoveProduction(ProductionItem item)
+		{
 			Queue.Remove(item);
 
 			if (item.Infinite)
-				Queue.Add(new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true });
+			{
+				var replacement = new ProductionItem(this, item.Item, item.TotalCost, playerPower, item.OnComplete) { Infinite = true };
+				Queue.Add(replacement);
+				ObserveQueued(replacement);
+			}
 		}
 
 		protected virtual void BeginProduction(ProductionItem item, bool hasPriority)
 		{
+			var cashBefore = playerResources.Cash;
+			var oreBefore = playerResources.Resources;
 			if (Info.PayUpFront)
 			{
 				if (playerResources.Resources > 0 && playerResources.Resources <= item.TotalCost)
@@ -638,6 +651,7 @@ namespace OpenRA.Mods.Common.Traits
 			else
 				Queue.Add(item);
 
+			ObserveQueued(item, cashBefore - playerResources.Cash, oreBefore - playerResources.Resources);
 			if (Info.InfiniteBuildLimit < 0)
 				return;
 
@@ -650,15 +664,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			for (var i = 1; i < queued.Count; i++)
 			{
-				// Refund what has been paid
-				if (queued[i].ResourcesPaid > 0)
-				{
-					playerResources.RefundResources(queued[i].ResourcesPaid);
-					queued[i].RemainingCost += queued[i].ResourcesPaid;
-				}
-
-				playerResources.RefundCash(queued[i].TotalCost - queued[i].RemainingCost);
-				EndProduction(queued[i]);
+				RefundAndCancel(queued[i], "merged_into_repeat");
+				RemoveProduction(queued[i]);
 			}
 		}
 
@@ -735,6 +742,7 @@ namespace OpenRA.Mods.Common.Traits
 		public int Slowdown { get; private set; }
 		public bool Infinite { get; set; }
 		public int BuildPaletteOrder { get; }
+		internal BotProductionTrace ObservatoryTrace { get; set; }
 
 		readonly ActorInfo ai;
 		readonly BuildableInfo bi;
@@ -763,6 +771,7 @@ namespace OpenRA.Mods.Common.Traits
 				if (time > 0)
 					RemainingTime = TotalTime = time;
 				Started = true;
+				ObservatoryTrace?.Start(Queue.Actor.World.WorldTick);
 			}
 
 			if (Done)
@@ -792,7 +801,7 @@ namespace OpenRA.Mods.Common.Traits
 					ResourcesPaid += pr.Resources;
 				else if (pr.Resources > costThisFrame)
 					ResourcesPaid += costThisFrame;
-				if (costThisFrame != 0 && !pr.TakeCash(costThisFrame, true))
+				if (costThisFrame != 0 && !TryPay(pr, costThisFrame))
 				{
 					ResourcesPaid -= pr.Resources;
 					return;
@@ -806,8 +815,33 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			Done = true;
+			ObservatoryTrace?.Ready(Queue.Actor.World.WorldTick);
 		}
 
-		public void Pause(bool paused) { Paused = paused; }
+		bool TryPay(PlayerResources resources, int amount)
+		{
+			if (ObservatoryTrace == null)
+				return resources.TakeCash(amount, true);
+
+			var cashBefore = resources.Cash;
+			var oreBefore = resources.Resources;
+			var tick = Queue.Actor.World.WorldTick;
+			if (!resources.TakeCash(amount, true))
+			{
+				ObservatoryTrace.WaitForFunds(tick, amount, (long)cashBefore + oreBefore);
+				return false;
+			}
+
+			ObservatoryTrace.Paid(tick, cashBefore - resources.Cash, oreBefore - resources.Resources);
+			return true;
+		}
+
+		public void Pause(bool paused)
+		{
+			if (Paused != paused)
+				ObservatoryTrace?.Pause(Queue.Actor.World.WorldTick, paused);
+
+			Paused = paused;
+		}
 	}
 }

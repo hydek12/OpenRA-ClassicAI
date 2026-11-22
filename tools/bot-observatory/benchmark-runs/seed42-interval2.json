@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "label": "rush \u00B7 spawn 1 \u00B7 interval 2",
+  "setup": {
+    "map": "Observatory Range",
+    "mapUid": "55e71c59780fddc2f0705808dd002b07279e5d34",
+    "seed": 42,
+    "localSeed": -43,
+    "botRandomSeed": -43,
+    "faction": "england",
+    "opponent": "observatory-fixed/russia/2",
+    "spawn": "1",
+    "tickRate": 50,
+    "timestepMs": 20,
+    "botTickInterval": 2,
+    "botOrderQuotient": 4,
+    "difficulty": "classic-normal",
+    "botType": "rush",
+    "lobbyOptions": {
+      "explored": "False",
+      "fog": "True",
+      "startingcash": "5000",
+      "cheats": "False",
+      "bounty": "False",
+      "factundeploy": "True",
+      "reusable-engineers": "False",
+      "crates": "False",
+      "allybuild": "True",
+      "buildradius": "True",
+      "shortgame": "True",
+      "techlevel": "unrestricted",
+      "gamespeed": "fastest",
+      "separateteamspawns": "True",
+      "startingunits": "none",
+      "timelimit": "0",
+      "custom-difficulty": "classic-normal"
+    }
+  },
+  "events": [
+    {
+      "type": "production_building",
+      "tick": 922
+    },
+    {
+      "type": "combat_unit",
+      "tick": 1144
+    },
+    {
+      "type": "attack_order",
+      "tick": 1988
+    },
+    {
+      "type": "enemy_contact",
+      "tick": 2229
+    }
+  ],
+  "observation": {
+    "observedThroughTick": 12000,
+    "stopReason": "tick_limit",
+    "exact": true,
+    "tickLimit": 12000
+  }
+}

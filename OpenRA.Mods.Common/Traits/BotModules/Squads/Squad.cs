@@ -48,7 +48,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			Bot = bot;
 			SquadManager = squadManager;
 			World = bot.Player.PlayerActor.World;
-			Random = World.LocalRandom;
+			Random = World.BotRandom;
 			Type = type;
 			SetActorToTarget(target);
 			FuzzyStateMachine = new StateMachine();
@@ -67,6 +67,95 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					FuzzyStateMachine.ChangeState(this, new UnitsForProtectionIdleState());
 					break;
 			}
+		}
+
+		BotObservatory observatory;
+		BotCombatEvent.Retreat retreat;
+		internal BotSquadTrace ObservatoryTrace { get; private set; }
+
+		internal void Observe(BotObservatory recorder, string reason)
+		{
+			if (ObservatoryTrace != null || recorder?.Recording != true)
+				return;
+
+			ObservatoryTrace = recorder.SquadCreated(Type.ToString(), reason, TargetActor);
+			if (ObservatoryTrace == null)
+				return;
+
+			observatory = recorder;
+			foreach (var unit in Units)
+				observatory.SquadMemberChanged(ObservatoryTrace, unit, true, reason);
+		}
+
+		internal void AddUnit(Actor unit, string reason)
+		{
+			if (Units.Add(unit) && ObservatoryTrace != null)
+				observatory.SquadMemberChanged(ObservatoryTrace, unit, true, reason);
+		}
+
+		internal void AddUnits(IEnumerable<Actor> units, string reason)
+		{
+			if (ObservatoryTrace == null)
+				Units.UnionWith(units);
+			else
+				foreach (var unit in units)
+					AddUnit(unit, reason);
+		}
+
+		internal void RemoveUnavailable(System.Predicate<Actor> unavailable)
+		{
+			if (ObservatoryTrace == null)
+				Units.RemoveWhere(unavailable);
+			else
+				Units.RemoveWhere(unit =>
+				{
+					if (!unavailable(unit))
+						return false;
+
+					if (unit != null)
+					{
+						var reason = unit.IsDead ? "destroyed" : unit.IsInWorld ? "owner_changed" : "left_world";
+						observatory.SquadMemberChanged(ObservatoryTrace, unit, false, reason);
+					}
+
+					return true;
+				});
+		}
+
+		internal void ReleaseUnits()
+		{
+			if (ObservatoryTrace != null)
+				foreach (var unit in Units)
+					observatory.SquadMemberChanged(ObservatoryTrace, unit, false, "released");
+
+			Units.Clear();
+		}
+
+		internal void Retire()
+		{
+			if (ObservatoryTrace != null)
+				observatory.SquadDisbanded(ObservatoryTrace);
+		}
+
+		internal void SetRetreat(string reason)
+		{
+			retreat = reason == null || ObservatoryTrace == null ? null : observatory.RetreatDecided(ObservatoryTrace, Units, reason);
+		}
+
+		internal void QueueRetreatOrder(Order order)
+		{
+			if (retreat != null && Bot is ModularBot modularBot)
+				modularBot.QueueRetreatOrder(order, retreat);
+			else
+				Bot.QueueOrder(order);
+		}
+
+		internal void QueueAttackOrder(Order order, string trigger, int? assessedEnemies = null)
+		{
+			if (Bot is ModularBot modularBot)
+				modularBot.QueueAttackOrder(order, TargetActor, ObservatoryTrace, trigger, assessedEnemies);
+			else
+				Bot.QueueOrder(order);
 		}
 
 		public void Update()

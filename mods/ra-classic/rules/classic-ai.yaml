@@ -75,6 +75,7 @@ World:
 					BotOrderQuotient: 0
 
 Player:
+	BotObservatory:
 	SupportPowerBotModule:
 		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && (!classic-ai-override || !classic-easy-ai)
 	PowerDownBotModule:

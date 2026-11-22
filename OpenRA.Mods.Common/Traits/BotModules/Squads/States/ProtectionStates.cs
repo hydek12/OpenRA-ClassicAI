@@ -39,7 +39,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget(target);
 				if (target.Actor == null)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState());
+					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), "no_reachable_target");
 					return;
 				}
 			}
@@ -50,7 +50,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			{
 				if (Backoff < 0)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState());
+					owner.FuzzyStateMachine.ChangeState(owner, new UnitsForProtectionFleeState(), "lost_visibility");
 					Backoff = BackoffTicks;
 					return;
 				}

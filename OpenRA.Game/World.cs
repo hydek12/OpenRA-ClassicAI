@@ -50,6 +50,10 @@ namespace OpenRA
 
 		public readonly MersenneTwister SharedRandom;
 		public readonly MersenneTwister LocalRandom;
+		public readonly int? ObservatoryLocalSeed;
+		public readonly int? ObservatoryBotSeed;
+		readonly MersenneTwister observatoryBotRandom;
+		public MersenneTwister BotRandom => observatoryBotRandom ?? LocalRandom;
 		public LongBitSet<PlayerBitMask> AllPlayersMask = default;
 		public readonly LongBitSet<PlayerBitMask> NoPlayersMask = default;
 
@@ -68,6 +72,7 @@ namespace OpenRA
 		public Player LocalPlayer { get; private set; }
 
 		public event Action GameOver = () => { };
+		public event Action TickCompleted;
 
 		/// <summary>Indicates that the game has ended.</summary>
 		/// <remarks>Should only be set in <see cref="EndGame"/>.</remarks>
@@ -111,6 +116,7 @@ namespace OpenRA
 		public bool ShroudObscures(WPos pos) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(pos); }
 		public bool ShroudObscures(PPos uv) { return RenderPlayer != null && !RenderPlayer.Shroud.IsExplored(uv); }
 
+		public bool IsOutOfSync => OrderManager.IsOutOfSync;
 		public bool IsReplay => OrderManager.Connection is ReplayConnection;
 
 		public bool IsLoadingGameSave => OrderManager.NetFrameNumber <= OrderManager.GameSaveLastFrame;
@@ -197,7 +203,15 @@ namespace OpenRA
 			Timestep = ReplayTimestep = GameSpeed.Timestep;
 
 			SharedRandom = new MersenneTwister(orderManager.LobbyInfo.GlobalSettings.RandomSeed);
-			LocalRandom = new MersenneTwister();
+
+			// Observatory seeds the local stream and can isolate bot draws from presentation draws.
+			ObservatoryLocalSeed = Game.GetObservatorySeed(this) is int seed ? ~seed : null;
+			LocalRandom = ObservatoryLocalSeed is int localSeed ? new MersenneTwister(localSeed) : new MersenneTwister();
+			if (ObservatoryLocalSeed is int botSeed && Environment.GetEnvironmentVariable("OPENRA_OBSERVATORY_BOT_RANDOM") == "isolated")
+			{
+				ObservatoryBotSeed = botSeed;
+				observatoryBotRandom = new MersenneTwister(botSeed);
+			}
 
 			var worldActorType = type == WorldType.Editor ? SystemActors.EditorWorld : SystemActors.World;
 			WorldActor = CreateActor(worldActorType.ToString(), []);
@@ -412,6 +426,7 @@ namespace OpenRA
 
 		public void Tick()
 		{
+			var previousTick = WorldTick;
 			if (wasLoadingGameSave && !IsLoadingGameSave)
 			{
 				foreach (var kv in gameSaveTraitData)
@@ -452,6 +467,9 @@ namespace OpenRA
 
 			while (frameEndActions.Count != 0)
 				frameEndActions.Dequeue()(this);
+
+			if (WorldTick != previousTick)
+				TickCompleted?.Invoke();
 		}
 
 		// For things that want to update their render state once per tick, ignoring pause state

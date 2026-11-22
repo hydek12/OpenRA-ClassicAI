@@ -299,6 +299,11 @@ namespace OpenRA
 
 		public static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders)
 		{
+			CreateAndStartLocalServer(mapUID, setupOrders, false);
+		}
+
+		static void CreateAndStartLocalServer(string mapUID, IEnumerable<Order> setupOrders, bool isSkirmish)
+		{
 			OrderManager om = null;
 
 			void LobbyReady()
@@ -310,7 +315,18 @@ namespace OpenRA
 
 			LobbyInfoChanged += LobbyReady;
 
-			om = JoinServer(CreateLocalServer(mapUID), "");
+			om = JoinServer(CreateLocalServer(mapUID, isSkirmish), "");
+		}
+
+		public static bool IsLocalSkirmish(World world)
+		{
+			return world.Type == WorldType.Regular && !world.IsReplay && server?.Type == ServerType.Skirmish &&
+				server.LobbyInfo.GlobalSettings.GameUid == world.LobbyInfo.GlobalSettings.GameUid;
+		}
+
+		internal static int? GetObservatorySeed(World world)
+		{
+			return IsLocalSkirmish(world) ? server.ObservatorySeed : null;
 		}
 
 		public static bool IsHost
@@ -1001,6 +1017,11 @@ namespace OpenRA
 
 		public static void LoadMap(string launchMap)
 		{
+			LoadMap(launchMap, false);
+		}
+
+		public static void LoadMap(string launchMap, bool observatorySkirmish)
+		{
 			var orders = new List<Order>
 			{
 				Order.Command("option gamespeed default"),
@@ -1011,7 +1032,15 @@ namespace OpenRA
 			if (map == null)
 				throw new ArgumentException($"Could not find map '{launchMap}'.");
 
-			CreateAndStartLocalServer(map.Uid, orders);
+			if (observatorySkirmish)
+			{
+				// The local skirmish profile sets the bot slots and lobby options.
+				orders.Clear();
+				orders.Add(Order.Command($"state {Session.ClientState.NotReady}"));
+				orders.Add(Order.Command("startgame"));
+			}
+
+			CreateAndStartLocalServer(map.Uid, orders, isSkirmish: observatorySkirmish);
 		}
 
 		public static void FinishBenchmark()

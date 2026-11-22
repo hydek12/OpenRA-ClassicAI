@@ -1,0 +1,48 @@
+MapFormat: 11
+RequiresMod: ra
+Title: Observatory Range
+Author: The Bot Observatory
+Tileset: TEMPERAT
+MapSize: 56,48
+Bounds: 2,2,52,44
+Visibility: Lobby
+Categories: Conquest
+Players:
+	PlayerReference@Neutral:
+		Name: Neutral
+		OwnsWorld: True
+		NonCombatant: True
+		Faction: england
+	PlayerReference@Creeps:
+		Name: Creeps
+		NonCombatant: True
+		Faction: england
+		Enemies: Multi0, Multi1
+	PlayerReference@Multi0:
+		Name: Multi0
+		Playable: True
+		Faction: england
+		Enemies: Creeps
+	PlayerReference@Multi1:
+		Name: Multi1
+		Playable: True
+		Faction: russia
+		Enemies: Creeps
+Actors:
+	WestSpawn: mpspawn
+		Owner: Neutral
+		Location: 12,24
+	EastSpawn: mpspawn
+		Owner: Neutral
+		Location: 44,24
+	OpponentYard: fact
+		Owner: Multi1
+		Location: 45,21
+	OpponentPower: powr
+		Owner: Multi1
+		Location: 46,26
+	OpponentBarracks: barr
+		Owner: Multi1
+		Location: 45,29
+Rules: rules.yaml
+FluentMessages: benchmark.ftl

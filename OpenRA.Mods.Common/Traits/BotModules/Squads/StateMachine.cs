@@ -20,13 +20,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 			currentState?.Tick(squad);
 		}
 
-		public void ChangeState(Squad squad, IState newState)
+		public void ChangeState(Squad squad, IState newState, string retreatReason = null)
 		{
 			currentState?.Deactivate(squad);
 
 			if (newState != null)
 				currentState = newState;
 
+			squad.SetRetreat(retreatReason);
 			currentState?.Activate(squad);
 		}
 	}

@@ -46,9 +46,11 @@ namespace OpenRA.Mods.Common.Traits
 
 		readonly ModularBotInfo info;
 		readonly World world;
-		readonly Queue<Order> orders = [];
+		readonly Queue<(Order Order, Actor OffensiveTarget, BotSquadTrace.PendingAttack Attack, BotCombatEvent.Retreat Retreat)> orders = [];
 
 		Player player;
+		BotObservatory observatory;
+
 		// Agentic Gemini 4 Hydrogen High
 		CustomDifficultyRules difficultyRules;
 
@@ -73,7 +75,9 @@ namespace OpenRA.Mods.Common.Traits
 				return;
 
 			IsEnabled = true;
+			observatory = p.PlayerActor.TraitOrDefault<BotObservatory>();
 			player = p;
+
 			// Agentic Gemini 4 Hydrogen High
 			difficultyRules = world.WorldActor.TraitOrDefault<CustomDifficultyRules>();
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
@@ -84,7 +88,19 @@ namespace OpenRA.Mods.Common.Traits
 
 		void IBot.QueueOrder(Order order)
 		{
-			orders.Enqueue(order);
+			orders.Enqueue((order, null, null, null));
+		}
+
+		internal void QueueAttackOrder(Order order, Actor target, BotSquadTrace squad, string trigger, int? assessedEnemies)
+		{
+			var attack = squad is { FirstAttack: null }
+				? new BotSquadTrace.PendingAttack(squad, world.WorldTick, trigger, assessedEnemies) : null;
+			orders.Enqueue((order, target, attack, null));
+		}
+
+		internal void QueueRetreatOrder(Order order, BotCombatEvent.Retreat retreat)
+		{
+			orders.Enqueue((order, null, null, retreat));
 		}
 
 		void ITick.Tick(Actor self)
@@ -94,7 +110,9 @@ namespace OpenRA.Mods.Common.Traits
 
 			// Agentic Gemini 4 Hydrogen High
 			var diffMods = difficultyRules?.GetModifiers(player);
-			var tickInterval = Math.Max(1, diffMods?.BotTickInterval ?? 1);
+			var tickInterval = observatory?.TickIntervalOverride(player) ?? Math.Max(1, diffMods?.BotTickInterval ?? 1);
+			var orderQuotient = diffMods != null && diffMods.BotOrderQuotient > 0 ? diffMods.BotOrderQuotient : info.MinOrderQuotientPerTick;
+			observatory?.Start(player, tickInterval, orderQuotient, difficultyRules?.GetPlayerPresetName(player));
 			if (tickInterval == 1 || self.World.WorldTick % tickInterval == 0)
 			{
 				using (new PerfSample("bot_tick"))
@@ -108,10 +126,15 @@ namespace OpenRA.Mods.Common.Traits
 				}
 			}
 
-			var orderQuotient = diffMods != null && diffMods.BotOrderQuotient > 0 ? diffMods.BotOrderQuotient : info.MinOrderQuotientPerTick;
 			var ordersToIssueThisTick = Math.Min((orders.Count + orderQuotient - 1) / orderQuotient, orders.Count);
 			for (var i = 0; i < ordersToIssueThisTick; i++)
-				world.IssueOrder(orders.Dequeue());
+			{
+				var (order, offensiveTarget, attack, retreat) = orders.Dequeue();
+				world.IssueOrder(order);
+				observatory?.OrderIssued(order, offensiveTarget, attack);
+				if (retreat != null)
+					observatory?.RetreatOrderIssued(order, retreat);
+			}
 		}
 
 		void INotifyDamage.Damaged(Actor self, AttackInfo e)

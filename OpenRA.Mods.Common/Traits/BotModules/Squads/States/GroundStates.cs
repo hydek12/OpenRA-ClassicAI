@@ -106,13 +106,14 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			if (AttackOrFleeFuzzy.Default.CanAttack(owner.Units, enemyUnits))
 			{
-				owner.Bot.QueueOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()));
+				owner.QueueAttackOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()),
+					"ground_engagement_approved", enemyUnits.Count);
 
 				// We have gathered sufficient units. Attack the nearest enemy unit.
 				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackMoveState());
 			}
 			else
-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "engagement_declined");
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -137,7 +138,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget(closestEnemy);
 				if (closestEnemy.Actor == null)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
+					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "no_reachable_target");
 					return;
 				}
 			}
@@ -185,11 +186,11 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsAttackState());
 				}
 				else
-					owner.Bot.QueueOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()));
+					owner.QueueAttackOrder(new Order("AttackMove", null, owner.Target, false, groupedActors: owner.Units.ToArray()), "continue_advance");
 			}
 
 			if (ShouldFlee(owner))
-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "threat_assessment");
 		}
 
 		public void Deactivate(Squad owner) { }
@@ -214,7 +215,7 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 				owner.SetActorToTarget(closestEnemy);
 				if (closestEnemy.Actor == null)
 				{
-					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
+					owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "no_reachable_target");
 					return;
 				}
 			}
@@ -243,10 +244,10 @@ namespace OpenRA.Mods.Common.Traits.BotModules.Squads
 
 			foreach (var a in owner.Units)
 				if (!BusyAttack(a))
-					owner.Bot.QueueOrder(new Order("AttackMove", a, owner.Target, false));
+					owner.QueueAttackOrder(new Order("AttackMove", a, owner.Target, false), "unit_ready_to_engage");
 
 			if (ShouldFlee(owner))
-				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState());
+				owner.FuzzyStateMachine.ChangeState(owner, new GroundUnitsFleeState(), "threat_assessment");
 		}
 
 		public void Deactivate(Squad owner) { }

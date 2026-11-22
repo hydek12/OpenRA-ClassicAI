@@ -111,7 +111,7 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			var randomConstructionYard = constructionYardBuildings.Actors
 				.Where(a => a.Owner == Player)
-				.RandomOrDefault(World.LocalRandom);
+				.RandomOrDefault(World.BotRandom);
 
 			return randomConstructionYard?.Location ?? initialBaseCenter;
 		}
@@ -134,6 +134,7 @@ namespace OpenRA.Mods.Common.Traits
 		IBotPositionsUpdated[] notifyPositionsUpdated;
 		IBotNotifyIdleBaseUnits[] notifyIdleBaseUnits;
 
+		BotObservatory observatory;
 		List<Actor> unitsHangingAroundTheBase = [];
 		CPos initialBaseCenter;
 
@@ -193,17 +194,18 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Avoid all AIs trying to rush in the same tick, randomize their initial rush a little.
 			var smallFractionOfRushInterval = Info.RushInterval / 20;
-			rushTicks = World.LocalRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
+			rushTicks = World.BotRandom.Next(Info.RushInterval - smallFractionOfRushInterval, Info.RushInterval + smallFractionOfRushInterval);
 
 			// Avoid all AIs reevaluating assignments on the same tick, randomize their initial evaluation delay.
-			assignRolesTicks = World.LocalRandom.Next(0, Info.AssignRolesInterval);
-			attackForceTicks = World.LocalRandom.Next(0, Info.AttackForceInterval);
-			minAttackForceDelayTicks = World.LocalRandom.Next(0, Info.MinimumAttackForceDelay);
+			assignRolesTicks = World.BotRandom.Next(0, Info.AssignRolesInterval);
+			attackForceTicks = World.BotRandom.Next(0, Info.AttackForceInterval);
+			minAttackForceDelayTicks = World.BotRandom.Next(0, Info.MinimumAttackForceDelay);
 		}
 
 		void IBotEnabled.BotEnabled(IBot bot)
 		{
 			this.bot = bot;
+			observatory = Player.PlayerActor.TraitOrDefault<BotObservatory>();
 		}
 
 		void IBotTick.BotTick(IBot bot)
@@ -308,7 +310,13 @@ namespace OpenRA.Mods.Common.Traits
 		void CleanSquads()
 		{
 			foreach (var s in Squads)
-				s.Units.RemoveWhere(unitCannotBeOrdered);
+			{
+				s.Observe(observatory, "existing_squad");
+				s.RemoveUnavailable(unitCannotBeOrdered);
+				if (!s.IsValid)
+					s.Retire();
+			}
+
 			Squads.RemoveAll(s => !s.IsValid);
 		}
 
@@ -318,9 +326,10 @@ namespace OpenRA.Mods.Common.Traits
 			return Squads.FirstOrDefault(s => s.Type == type);
 		}
 
-		Squad RegisterNewSquad(IBot bot, SquadType type, (Actor Actor, WVec Offset) target = default)
+		Squad RegisterNewSquad(IBot bot, SquadType type, string reason, (Actor Actor, WVec Offset) target = default)
 		{
 			var ret = new Squad(bot, this, type, target);
+			ret.Observe(observatory, reason);
 			Squads.Add(ret);
 			return ret;
 		}
@@ -328,7 +337,7 @@ namespace OpenRA.Mods.Common.Traits
 		internal void UnregisterSquad(Squad squad)
 		{
 			activeUnits.ExceptWith(squad.Units);
-			squad.Units.Clear();
+			squad.ReleaseUnits();
 
 			// CleanSquads will remove the squad from the Squads list.
 			// We can't do that here as this is designed to be called from within Squad.Update
@@ -394,16 +403,16 @@ namespace OpenRA.Mods.Common.Traits
 				if (Info.AirUnitsTypes.Contains(a.Info.Name))
 				{
 					var air = GetSquadOfType(SquadType.Air);
-					air ??= RegisterNewSquad(bot, SquadType.Air);
+					air ??= RegisterNewSquad(bot, SquadType.Air, "air_assignment");
 
-					air.Units.Add(a);
+					air.AddUnit(a, "air_assignment");
 				}
 				else if (Info.NavalUnitsTypes.Contains(a.Info.Name))
 				{
 					var ships = GetSquadOfType(SquadType.Naval);
-					ships ??= RegisterNewSquad(bot, SquadType.Naval);
+					ships ??= RegisterNewSquad(bot, SquadType.Naval, "naval_assignment");
 
-					ships.Units.Add(a);
+					ships.AddUnit(a, "naval_assignment");
 				}
 				else
 					unitsHangingAroundTheBase.Add(a);
@@ -420,18 +429,22 @@ namespace OpenRA.Mods.Common.Traits
 		{
 			// Create an attack force when we have enough units around our base.
 			// (don't bother leaving any behind for defense)
-			var randomizedSquadSize = Info.SquadSize + World.LocalRandom.Next(Info.SquadSizeRandomBonus);
+			var randomizedSquadSize = Info.SquadSize + World.BotRandom.Next(Info.SquadSizeRandomBonus);
 
-			if (unitsHangingAroundTheBase.Count >= randomizedSquadSize)
+			var available = unitsHangingAroundTheBase.Count;
+			if (available >= randomizedSquadSize)
 			{
-				var attackForce = RegisterNewSquad(bot, SquadType.Assault);
+				var attackForce = RegisterNewSquad(bot, SquadType.Assault, "assault_threshold");
+				observatory?.SquadDecision("assault", available, randomizedSquadSize, available, "formed", attackForce.ObservatoryTrace);
 
-				attackForce.Units.UnionWith(unitsHangingAroundTheBase);
+				attackForce.AddUnits(unitsHangingAroundTheBase, "assault_threshold");
 
 				unitsHangingAroundTheBase.Clear();
 				foreach (var n in notifyIdleBaseUnits)
 					n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
 			}
+			else
+				observatory?.SquadDecision("assault", available, randomizedSquadSize, available, "below_threshold");
 		}
 
 		void TryToRushAttack(IBot bot)
@@ -444,13 +457,20 @@ namespace OpenRA.Mods.Common.Traits
 					groundTroopNum += s.Units.Count;
 			}
 
+			var unassigned = unitsHangingAroundTheBase.Count;
 			if (groundTroopNum < Info.SquadSize)
+			{
+				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "below_threshold");
 				return;
+			}
 
-			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.LocalRandom);
+			var randomAttackableUnit = unitsHangingAroundTheBase.Where(a => a.Info.HasTraitInfo<AttackBaseInfo>()).RandomOrDefault(World.BotRandom);
 
 			if (randomAttackableUnit == null)
+			{
+				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "no_unassigned_attacker");
 				return;
+			}
 
 			var allEnemyBaseBuilder = FindEnemies(
 				constructionYardBuildings.Actors,
@@ -458,7 +478,10 @@ namespace OpenRA.Mods.Common.Traits
 				.ToList();
 
 			if (allEnemyBaseBuilder.Count == 0)
+			{
+				observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "no_reachable_base");
 				return;
+			}
 
 			foreach (var enemyBaseBuilder in allEnemyBaseBuilder)
 			{
@@ -474,7 +497,7 @@ namespace OpenRA.Mods.Common.Traits
 
 				if (AttackOrFleeFuzzy.Rush.CanAttack(unitsHangingAroundTheBase, enemies.ConvertAll(x => x.Actor)))
 				{
-					var target = enemies.Count > 0 ? enemies.Random(World.LocalRandom) : enemyBaseBuilder;
+					var target = enemies.Count > 0 ? enemies.Random(World.BotRandom) : enemyBaseBuilder;
 					foreach (var s in Squads)
 					{
 						if (s.IsValid)
@@ -482,9 +505,11 @@ namespace OpenRA.Mods.Common.Traits
 					}
 
 					var rush = GetSquadOfType(SquadType.Rush);
-					rush ??= RegisterNewSquad(bot, SquadType.Rush, target);
+					var outcome = rush == null ? "formed" : "reinforced";
+					rush ??= RegisterNewSquad(bot, SquadType.Rush, "rush_evaluation", target);
+					observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, outcome, rush.ObservatoryTrace);
 
-					rush.Units.UnionWith(unitsHangingAroundTheBase);
+					rush.AddUnits(unitsHangingAroundTheBase, "rush_evaluation");
 					unitsHangingAroundTheBase.Clear();
 					foreach (var n in notifyIdleBaseUnits)
 						n.UpdatedIdleBaseUnits(unitsHangingAroundTheBase);
@@ -492,6 +517,8 @@ namespace OpenRA.Mods.Common.Traits
 					return;
 				}
 			}
+
+			observatory?.SquadDecision("rush", groundTroopNum, Info.SquadSize, unassigned, "declined_engagement");
 		}
 
 		void ProtectOwn(IBot bot, Actor attacker)
@@ -507,14 +534,14 @@ namespace OpenRA.Mods.Common.Traits
 			}
 
 			var protectSq = GetSquadOfType(SquadType.Protection);
-			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, (attacker, WVec.Zero));
+			protectSq ??= RegisterNewSquad(bot, SquadType.Protection, "damage_response", (attacker, WVec.Zero));
 
 			var unusedUnits = new List<Actor>();
 			foreach (var a in unitsHangingAroundTheBase)
 			{
 				if (a.Info.HasTraitInfo<AircraftInfo>() && !Info.AirUnitsTypes.Contains(a.Info.Name))
 				{
-					protectSq.Units.Add(a);
+					protectSq.AddUnit(a, "damage_response");
 					continue;
 				}
 
@@ -526,7 +553,7 @@ namespace OpenRA.Mods.Common.Traits
 				}
 
 				if (FindEnemies([attacker], a).Any())
-					protectSq.Units.Add(a);
+					protectSq.AddUnit(a, "damage_response");
 				else
 					unusedUnits.Add(a);
 			}

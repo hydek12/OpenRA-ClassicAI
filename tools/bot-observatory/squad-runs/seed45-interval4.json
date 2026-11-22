@@ -1,0 +1,7423 @@
+{
+  "version": 1,
+  "label": "rush \u00B7 spawn 1 \u00B7 interval 4",
+  "setup": {
+    "map": "Observatory Range",
+    "mapUid": "55e71c59780fddc2f0705808dd002b07279e5d34",
+    "seed": 45,
+    "localSeed": -46,
+    "botRandomSeed": -46,
+    "faction": "england",
+    "opponent": "observatory-fixed/russia/2",
+    "spawn": "1",
+    "tickRate": 50,
+    "timestepMs": 20,
+    "botTickInterval": 4,
+    "botOrderQuotient": 4,
+    "difficulty": "classic-normal",
+    "botType": "rush",
+    "lobbyOptions": {
+      "explored": "False",
+      "fog": "True",
+      "startingcash": "5000",
+      "cheats": "False",
+      "bounty": "False",
+      "factundeploy": "True",
+      "reusable-engineers": "False",
+      "crates": "False",
+      "allybuild": "True",
+      "buildradius": "True",
+      "shortgame": "True",
+      "techlevel": "unrestricted",
+      "gamespeed": "fastest",
+      "separateteamspawns": "True",
+      "startingunits": "none",
+      "timelimit": "0",
+      "custom-difficulty": "classic-normal"
+    }
+  },
+  "events": [],
+  "observation": {
+    "observedThroughTick": 12000,
+    "stopReason": "tick_limit",
+    "exact": true,
+    "tickLimit": 12000
+  },
+  "economy": {
+    "sampleEveryTicks": 25,
+    "samples": [
+      {
+        "tick": 1,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": []
+      },
+      {
+        "tick": 26,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 51,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 76,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 101,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 126,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 151,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 176,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 201,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 226,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 251,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 276,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 301,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 326,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 351,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 376,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 401,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 426,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 451,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 476,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 501,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 526,
+        "cash": 5000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 0,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 0,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 551,
+        "cash": 4983,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 17,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 17,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 576,
+        "cash": 4941,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 59,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 59,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 601,
+        "cash": 4900,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 100,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 100,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 626,
+        "cash": 4858,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 142,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 142,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 651,
+        "cash": 4816,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 184,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 184,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 676,
+        "cash": 4775,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 225,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 225,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 701,
+        "cash": 4733,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 267,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 267,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 726,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 751,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 776,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 801,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 826,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 851,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 876,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 901,
+        "cash": 4700,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 300,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 300,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 926,
+        "cash": 4673,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 327,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 327,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 951,
+        "cash": 4631,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 369,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 369,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 976,
+        "cash": 4590,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 410,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 410,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1001,
+        "cash": 4548,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 452,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 452,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1026,
+        "cash": 4506,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 494,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 494,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1051,
+        "cash": 4465,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 535,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 535,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1076,
+        "cash": 4423,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 577,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 577,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1101,
+        "cash": 4381,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 619,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 619,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1126,
+        "cash": 4340,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 660,
+        "powerProvided": 100,
+        "powerDrained": 0,
+        "productionPaid": 660,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1151,
+        "cash": 4298,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 702,
+        "powerProvided": 99,
+        "powerDrained": 0,
+        "productionPaid": 702,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1176,
+        "cash": 4255,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 745,
+        "powerProvided": 99,
+        "powerDrained": 0,
+        "productionPaid": 744,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1201,
+        "cash": 4214,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 786,
+        "powerProvided": 97,
+        "powerDrained": 0,
+        "productionPaid": 785,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1226,
+        "cash": 4172,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 828,
+        "powerProvided": 96,
+        "powerDrained": 0,
+        "productionPaid": 827,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1251,
+        "cash": 4130,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 870,
+        "powerProvided": 93,
+        "powerDrained": 0,
+        "productionPaid": 869,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1276,
+        "cash": 4089,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 911,
+        "powerProvided": 91,
+        "powerDrained": 0,
+        "productionPaid": 910,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1301,
+        "cash": 4047,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 953,
+        "powerProvided": 90,
+        "powerDrained": 0,
+        "productionPaid": 952,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1326,
+        "cash": 4005,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 995,
+        "powerProvided": 88,
+        "powerDrained": 0,
+        "productionPaid": 994,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1351,
+        "cash": 3964,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1036,
+        "powerProvided": 85,
+        "powerDrained": 0,
+        "productionPaid": 1035,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1376,
+        "cash": 3922,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1078,
+        "powerProvided": 84,
+        "powerDrained": 0,
+        "productionPaid": 1077,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1401,
+        "cash": 3880,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1120,
+        "powerProvided": 82,
+        "powerDrained": 0,
+        "productionPaid": 1119,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1426,
+        "cash": 3839,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1161,
+        "powerProvided": 81,
+        "powerDrained": 0,
+        "productionPaid": 1160,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1451,
+        "cash": 3797,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1203,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1202,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1476,
+        "cash": 3753,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1247,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1244,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1501,
+        "cash": 3710,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1290,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1285,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1526,
+        "cash": 3666,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1334,
+        "powerProvided": 79,
+        "powerDrained": 0,
+        "productionPaid": 1327,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1551,
+        "cash": 3622,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1378,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1369,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1576,
+        "cash": 3579,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1421,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1410,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1601,
+        "cash": 3535,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1465,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1452,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1626,
+        "cash": 3491,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1509,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1494,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1651,
+        "cash": 3448,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1552,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1535,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1676,
+        "cash": 3404,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1596,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1577,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1701,
+        "cash": 3360,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1640,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1619,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1726,
+        "cash": 3317,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1683,
+        "powerProvided": 78,
+        "powerDrained": 0,
+        "productionPaid": 1660,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1751,
+        "cash": 3275,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1725,
+        "powerProvided": 76,
+        "powerDrained": 0,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1776,
+        "cash": 3273,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1727,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1801,
+        "cash": 3272,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1728,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1826,
+        "cash": 3271,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1729,
+        "powerProvided": 77,
+        "powerDrained": 0,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1851,
+        "cash": 3270,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1730,
+        "powerProvided": 76,
+        "powerDrained": 0,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1876,
+        "cash": 3269,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1731,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1901,
+        "cash": 3268,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1732,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1926,
+        "cash": 3267,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1733,
+        "powerProvided": 77,
+        "powerDrained": 30,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1951,
+        "cash": 3266,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1734,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 1700,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 1976,
+        "cash": 3258,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1742,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1707,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2001,
+        "cash": 3215,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1785,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1749,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2026,
+        "cash": 3173,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1827,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1790,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2051,
+        "cash": 3130,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1870,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 1832,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2076,
+        "cash": 3087,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1913,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 1874,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2101,
+        "cash": 3044,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 1956,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 1915,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2126,
+        "cash": 3000,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 2000,
+        "powerProvided": 76,
+        "powerDrained": 30,
+        "productionPaid": 1957,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2151,
+        "cash": 2956,
+        "ore": 0,
+        "earned": 0,
+        "netSpent": 2044,
+        "powerProvided": 74,
+        "powerDrained": 30,
+        "productionPaid": 1999,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2176,
+        "cash": 2945,
+        "ore": 443,
+        "earned": 475,
+        "netSpent": 2087,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 2040,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2201,
+        "cash": 2945,
+        "ore": 424,
+        "earned": 500,
+        "netSpent": 2131,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 2082,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2226,
+        "cash": 2945,
+        "ore": 380,
+        "earned": 500,
+        "netSpent": 2175,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 2124,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2251,
+        "cash": 2945,
+        "ore": 337,
+        "earned": 500,
+        "netSpent": 2218,
+        "powerProvided": 74,
+        "powerDrained": 30,
+        "productionPaid": 2165,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2276,
+        "cash": 2945,
+        "ore": 293,
+        "earned": 500,
+        "netSpent": 2262,
+        "powerProvided": 74,
+        "powerDrained": 30,
+        "productionPaid": 2207,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2301,
+        "cash": 2945,
+        "ore": 249,
+        "earned": 500,
+        "netSpent": 2306,
+        "powerProvided": 74,
+        "powerDrained": 30,
+        "productionPaid": 2249,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2326,
+        "cash": 2945,
+        "ore": 206,
+        "earned": 500,
+        "netSpent": 2349,
+        "powerProvided": 75,
+        "powerDrained": 30,
+        "productionPaid": 2290,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2351,
+        "cash": 2945,
+        "ore": 162,
+        "earned": 500,
+        "netSpent": 2393,
+        "powerProvided": 73,
+        "powerDrained": 30,
+        "productionPaid": 2332,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2376,
+        "cash": 2945,
+        "ore": 118,
+        "earned": 500,
+        "netSpent": 2437,
+        "powerProvided": 59,
+        "powerDrained": 30,
+        "productionPaid": 2374,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2401,
+        "cash": 2945,
+        "ore": 75,
+        "earned": 500,
+        "netSpent": 2480,
+        "powerProvided": 59,
+        "powerDrained": 30,
+        "productionPaid": 2415,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2426,
+        "cash": 2945,
+        "ore": 32,
+        "earned": 500,
+        "netSpent": 2523,
+        "powerProvided": 59,
+        "powerDrained": 30,
+        "productionPaid": 2457,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2451,
+        "cash": 2934,
+        "ore": 0,
+        "earned": 500,
+        "netSpent": 2566,
+        "powerProvided": 42,
+        "powerDrained": 30,
+        "productionPaid": 2499,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2476,
+        "cash": 2892,
+        "ore": 0,
+        "earned": 500,
+        "netSpent": 2608,
+        "powerProvided": 42,
+        "powerDrained": 30,
+        "productionPaid": 2540,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2501,
+        "cash": 2857,
+        "ore": 0,
+        "earned": 500,
+        "netSpent": 2643,
+        "powerProvided": 26,
+        "powerDrained": 30,
+        "productionPaid": 2574,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2526,
+        "cash": 2843,
+        "ore": 0,
+        "earned": 500,
+        "netSpent": 2657,
+        "powerProvided": 25,
+        "powerDrained": 30,
+        "productionPaid": 2587,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2551,
+        "cash": 2827,
+        "ore": 0,
+        "earned": 500,
+        "netSpent": 2673,
+        "powerProvided": 23,
+        "powerDrained": 30,
+        "productionPaid": 2602,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2576,
+        "cash": 2827,
+        "ore": 436,
+        "earned": 950,
+        "netSpent": 2687,
+        "powerProvided": 7,
+        "powerDrained": 30,
+        "productionPaid": 2615,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2601,
+        "cash": 2827,
+        "ore": 421,
+        "earned": 950,
+        "netSpent": 2702,
+        "powerProvided": 7,
+        "powerDrained": 30,
+        "productionPaid": 2629,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2626,
+        "cash": 2827,
+        "ore": 406,
+        "earned": 950,
+        "netSpent": 2717,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2644,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2651,
+        "cash": 2827,
+        "ore": 393,
+        "earned": 950,
+        "netSpent": 2730,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2657,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2676,
+        "cash": 2827,
+        "ore": 380,
+        "earned": 950,
+        "netSpent": 2743,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2670,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2701,
+        "cash": 2827,
+        "ore": 363,
+        "earned": 950,
+        "netSpent": 2760,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2685,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2726,
+        "cash": 2827,
+        "ore": 348,
+        "earned": 950,
+        "netSpent": 2775,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2699,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2751,
+        "cash": 2827,
+        "ore": 334,
+        "earned": 950,
+        "netSpent": 2789,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2712,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2776,
+        "cash": 2827,
+        "ore": 318,
+        "earned": 950,
+        "netSpent": 2805,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2727,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2801,
+        "cash": 2827,
+        "ore": 304,
+        "earned": 950,
+        "netSpent": 2819,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2740,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2826,
+        "cash": 2827,
+        "ore": 289,
+        "earned": 950,
+        "netSpent": 2834,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2754,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2851,
+        "cash": 2827,
+        "ore": 398,
+        "earned": 1075,
+        "netSpent": 2850,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2769,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2876,
+        "cash": 2827,
+        "ore": 384,
+        "earned": 1075,
+        "netSpent": 2864,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2782,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2901,
+        "cash": 2827,
+        "ore": 370,
+        "earned": 1075,
+        "netSpent": 2878,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2795,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2926,
+        "cash": 2827,
+        "ore": 354,
+        "earned": 1075,
+        "netSpent": 2894,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2810,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2951,
+        "cash": 2827,
+        "ore": 339,
+        "earned": 1075,
+        "netSpent": 2909,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2824,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 2976,
+        "cash": 2827,
+        "ore": 325,
+        "earned": 1075,
+        "netSpent": 2923,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2837,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3001,
+        "cash": 2827,
+        "ore": 308,
+        "earned": 1075,
+        "netSpent": 2940,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2852,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3026,
+        "cash": 2827,
+        "ore": 294,
+        "earned": 1075,
+        "netSpent": 2954,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2865,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3051,
+        "cash": 2827,
+        "ore": 279,
+        "earned": 1075,
+        "netSpent": 2969,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2879,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3076,
+        "cash": 2827,
+        "ore": 263,
+        "earned": 1075,
+        "netSpent": 2985,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2894,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3101,
+        "cash": 2827,
+        "ore": 249,
+        "earned": 1075,
+        "netSpent": 2999,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2907,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3126,
+        "cash": 2827,
+        "ore": 235,
+        "earned": 1075,
+        "netSpent": 3013,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2920,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3151,
+        "cash": 2827,
+        "ore": 219,
+        "earned": 1075,
+        "netSpent": 3029,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2935,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3176,
+        "cash": 2827,
+        "ore": 204,
+        "earned": 1075,
+        "netSpent": 3044,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2949,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3201,
+        "cash": 2827,
+        "ore": 190,
+        "earned": 1075,
+        "netSpent": 3058,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2962,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3226,
+        "cash": 2827,
+        "ore": 174,
+        "earned": 1075,
+        "netSpent": 3074,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2977,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3251,
+        "cash": 2827,
+        "ore": 160,
+        "earned": 1075,
+        "netSpent": 3088,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 2990,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3276,
+        "cash": 2827,
+        "ore": 270,
+        "earned": 1200,
+        "netSpent": 3103,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3004,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3301,
+        "cash": 2827,
+        "ore": 253,
+        "earned": 1200,
+        "netSpent": 3120,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3019,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3326,
+        "cash": 2827,
+        "ore": 239,
+        "earned": 1200,
+        "netSpent": 3134,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3032,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3351,
+        "cash": 2827,
+        "ore": 225,
+        "earned": 1200,
+        "netSpent": 3148,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3045,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3376,
+        "cash": 2827,
+        "ore": 209,
+        "earned": 1200,
+        "netSpent": 3164,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3060,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3401,
+        "cash": 2827,
+        "ore": 194,
+        "earned": 1200,
+        "netSpent": 3179,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3074,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3426,
+        "cash": 2827,
+        "ore": 180,
+        "earned": 1200,
+        "netSpent": 3193,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3087,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3451,
+        "cash": 2827,
+        "ore": 164,
+        "earned": 1200,
+        "netSpent": 3209,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3102,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3476,
+        "cash": 2827,
+        "ore": 150,
+        "earned": 1200,
+        "netSpent": 3223,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3115,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3501,
+        "cash": 2827,
+        "ore": 135,
+        "earned": 1200,
+        "netSpent": 3238,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3129,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3526,
+        "cash": 2827,
+        "ore": 119,
+        "earned": 1200,
+        "netSpent": 3254,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3144,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3551,
+        "cash": 2827,
+        "ore": 105,
+        "earned": 1200,
+        "netSpent": 3268,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3157,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3576,
+        "cash": 2827,
+        "ore": 91,
+        "earned": 1200,
+        "netSpent": 3282,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3170,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3601,
+        "cash": 2827,
+        "ore": 74,
+        "earned": 1200,
+        "netSpent": 3299,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3185,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3626,
+        "cash": 2827,
+        "ore": 59,
+        "earned": 1200,
+        "netSpent": 3314,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3199,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3651,
+        "cash": 2827,
+        "ore": 45,
+        "earned": 1200,
+        "netSpent": 3328,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3212,
+        "productionRefunded": 0,
+        "enabledQueues": [
+          "Building",
+          "Defense"
+        ]
+      },
+      {
+        "tick": 3676,
+        "cash": 3249,
+        "ore": 1135,
+        "earned": 1200,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3701,
+        "cash": 3249,
+        "ore": 1135,
+        "earned": 1200,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3726,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3751,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3776,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3801,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3826,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3851,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3876,
+        "cash": 3249,
+        "ore": 1185,
+        "earned": 1250,
+        "netSpent": 1816,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3901,
+        "cash": 3249,
+        "ore": 1184,
+        "earned": 1250,
+        "netSpent": 1817,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3926,
+        "cash": 3249,
+        "ore": 1183,
+        "earned": 1250,
+        "netSpent": 1818,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3951,
+        "cash": 3249,
+        "ore": 1182,
+        "earned": 1250,
+        "netSpent": 1819,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 3976,
+        "cash": 3249,
+        "ore": 1256,
+        "earned": 1325,
+        "netSpent": 1820,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4001,
+        "cash": 3249,
+        "ore": 1280,
+        "earned": 1350,
+        "netSpent": 1821,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4026,
+        "cash": 3249,
+        "ore": 1279,
+        "earned": 1350,
+        "netSpent": 1822,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4051,
+        "cash": 3249,
+        "ore": 1278,
+        "earned": 1350,
+        "netSpent": 1823,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4076,
+        "cash": 3249,
+        "ore": 1277,
+        "earned": 1350,
+        "netSpent": 1824,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4101,
+        "cash": 3249,
+        "ore": 1276,
+        "earned": 1350,
+        "netSpent": 1825,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4126,
+        "cash": 3249,
+        "ore": 1275,
+        "earned": 1350,
+        "netSpent": 1826,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4151,
+        "cash": 3249,
+        "ore": 1274,
+        "earned": 1350,
+        "netSpent": 1827,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4176,
+        "cash": 3249,
+        "ore": 1273,
+        "earned": 1350,
+        "netSpent": 1828,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4201,
+        "cash": 3249,
+        "ore": 1272,
+        "earned": 1350,
+        "netSpent": 1829,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4226,
+        "cash": 3249,
+        "ore": 1271,
+        "earned": 1350,
+        "netSpent": 1830,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4251,
+        "cash": 3249,
+        "ore": 1270,
+        "earned": 1350,
+        "netSpent": 1831,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4276,
+        "cash": 3249,
+        "ore": 1269,
+        "earned": 1350,
+        "netSpent": 1832,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4301,
+        "cash": 3249,
+        "ore": 1268,
+        "earned": 1350,
+        "netSpent": 1833,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4326,
+        "cash": 3249,
+        "ore": 1267,
+        "earned": 1350,
+        "netSpent": 1834,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4351,
+        "cash": 3249,
+        "ore": 1266,
+        "earned": 1350,
+        "netSpent": 1835,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4376,
+        "cash": 3249,
+        "ore": 1265,
+        "earned": 1350,
+        "netSpent": 1836,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4401,
+        "cash": 3249,
+        "ore": 1264,
+        "earned": 1350,
+        "netSpent": 1837,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4426,
+        "cash": 3249,
+        "ore": 1263,
+        "earned": 1350,
+        "netSpent": 1838,
+        "powerProvided": 0,
+        "powerDrained": 30,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 4976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 5976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 6976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 7976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 8976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 9976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 10976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11001,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11026,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11051,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11076,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11101,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11126,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11151,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11176,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11201,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11226,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11251,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11276,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11301,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11326,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11351,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11376,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11401,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11426,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11451,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11476,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11501,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11526,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11551,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11576,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11601,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11626,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11651,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11676,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11701,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11726,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11751,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11776,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11801,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11826,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11851,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11876,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11901,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11926,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11951,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 11976,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      },
+      {
+        "tick": 12000,
+        "cash": 3249,
+        "ore": 0,
+        "earned": 1350,
+        "netSpent": 3101,
+        "powerProvided": 0,
+        "powerDrained": 0,
+        "productionPaid": 3214,
+        "productionRefunded": 1514,
+        "enabledQueues": []
+      }
+    ],
+    "jobs": [
+      {
+        "id": 1,
+        "queue": "Building",
+        "item": "powr",
+        "name": "Power Plant",
+        "isBuilding": true,
+        "cost": 300,
+        "queuedAt": 540,
+        "startedAt": 541,
+        "readyAt": 720,
+        "completedAt": 790,
+        "cashPaid": 300,
+        "orePaid": 0,
+        "cashRefunded": 0,
+        "oreRefunded": 0,
+        "payments": [
+          {
+            "firstTick": 542,
+            "tick": 551,
+            "cash": 17,
+            "ore": 0
+          },
+          {
+            "firstTick": 552,
+            "tick": 576,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 577,
+            "tick": 601,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 602,
+            "tick": 626,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 627,
+            "tick": 651,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 652,
+            "tick": 676,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 677,
+            "tick": 701,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 702,
+            "tick": 726,
+            "cash": 33,
+            "ore": 0
+          }
+        ],
+        "fundingWaits": [],
+        "pauses": []
+      },
+      {
+        "id": 2,
+        "queue": "Building",
+        "item": "proc",
+        "name": "Ore Refinery",
+        "isBuilding": true,
+        "cost": 1400,
+        "queuedAt": 909,
+        "startedAt": 910,
+        "readyAt": 1749,
+        "completedAt": 1861,
+        "cashPaid": 1400,
+        "orePaid": 0,
+        "cashRefunded": 0,
+        "oreRefunded": 0,
+        "payments": [
+          {
+            "firstTick": 911,
+            "tick": 926,
+            "cash": 27,
+            "ore": 0
+          },
+          {
+            "firstTick": 927,
+            "tick": 951,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 952,
+            "tick": 976,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 977,
+            "tick": 1001,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1002,
+            "tick": 1026,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1027,
+            "tick": 1051,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1052,
+            "tick": 1076,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1077,
+            "tick": 1101,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1102,
+            "tick": 1126,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1127,
+            "tick": 1151,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1152,
+            "tick": 1176,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1177,
+            "tick": 1201,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1202,
+            "tick": 1226,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1227,
+            "tick": 1251,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1252,
+            "tick": 1276,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1277,
+            "tick": 1301,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1302,
+            "tick": 1326,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1327,
+            "tick": 1351,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1352,
+            "tick": 1376,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1377,
+            "tick": 1401,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1402,
+            "tick": 1426,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1427,
+            "tick": 1451,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1452,
+            "tick": 1476,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1477,
+            "tick": 1501,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1502,
+            "tick": 1526,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1527,
+            "tick": 1551,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1552,
+            "tick": 1576,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1577,
+            "tick": 1601,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1602,
+            "tick": 1626,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1627,
+            "tick": 1651,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1652,
+            "tick": 1676,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1677,
+            "tick": 1701,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 1702,
+            "tick": 1726,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 1727,
+            "tick": 1751,
+            "cash": 40,
+            "ore": 0
+          }
+        ],
+        "fundingWaits": [],
+        "pauses": []
+      },
+      {
+        "id": 3,
+        "queue": "Building",
+        "item": "weap",
+        "name": "War Factory",
+        "isBuilding": true,
+        "cost": 2000,
+        "queuedAt": 1971,
+        "startedAt": 1972,
+        "cancelledAt": 3655,
+        "cancellationReason": "queue_cleared",
+        "cashPaid": 422,
+        "orePaid": 1092,
+        "cashRefunded": 422,
+        "oreRefunded": 1092,
+        "payments": [
+          {
+            "firstTick": 1973,
+            "tick": 1976,
+            "cash": 7,
+            "ore": 0
+          },
+          {
+            "firstTick": 1977,
+            "tick": 2001,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 2002,
+            "tick": 2026,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 2027,
+            "tick": 2051,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 2052,
+            "tick": 2076,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 2077,
+            "tick": 2101,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 2102,
+            "tick": 2126,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 2127,
+            "tick": 2151,
+            "cash": 42,
+            "ore": 0
+          },
+          {
+            "firstTick": 2152,
+            "tick": 2176,
+            "cash": 10,
+            "ore": 31
+          },
+          {
+            "firstTick": 2177,
+            "tick": 2201,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2202,
+            "tick": 2226,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2227,
+            "tick": 2251,
+            "cash": 0,
+            "ore": 41
+          },
+          {
+            "firstTick": 2252,
+            "tick": 2276,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2277,
+            "tick": 2301,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2302,
+            "tick": 2326,
+            "cash": 0,
+            "ore": 41
+          },
+          {
+            "firstTick": 2327,
+            "tick": 2351,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2352,
+            "tick": 2376,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2377,
+            "tick": 2401,
+            "cash": 0,
+            "ore": 41
+          },
+          {
+            "firstTick": 2402,
+            "tick": 2426,
+            "cash": 0,
+            "ore": 42
+          },
+          {
+            "firstTick": 2427,
+            "tick": 2451,
+            "cash": 10,
+            "ore": 32
+          },
+          {
+            "firstTick": 2452,
+            "tick": 2476,
+            "cash": 41,
+            "ore": 0
+          },
+          {
+            "firstTick": 2477,
+            "tick": 2501,
+            "cash": 34,
+            "ore": 0
+          },
+          {
+            "firstTick": 2503,
+            "tick": 2526,
+            "cash": 13,
+            "ore": 0
+          },
+          {
+            "firstTick": 2527,
+            "tick": 2551,
+            "cash": 15,
+            "ore": 0
+          },
+          {
+            "firstTick": 2554,
+            "tick": 2576,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2578,
+            "tick": 2601,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 2602,
+            "tick": 2626,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 2629,
+            "tick": 2651,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2653,
+            "tick": 2676,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2677,
+            "tick": 2701,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 2704,
+            "tick": 2726,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 2728,
+            "tick": 2751,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2752,
+            "tick": 2776,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 2779,
+            "tick": 2801,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2803,
+            "tick": 2826,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 2827,
+            "tick": 2851,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 2854,
+            "tick": 2876,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2878,
+            "tick": 2901,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2902,
+            "tick": 2926,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 2929,
+            "tick": 2951,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 2953,
+            "tick": 2976,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 2977,
+            "tick": 3001,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3004,
+            "tick": 3026,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3028,
+            "tick": 3051,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3052,
+            "tick": 3076,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3079,
+            "tick": 3101,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3103,
+            "tick": 3126,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3127,
+            "tick": 3151,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3154,
+            "tick": 3176,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3178,
+            "tick": 3201,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3202,
+            "tick": 3226,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3229,
+            "tick": 3251,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3253,
+            "tick": 3276,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3277,
+            "tick": 3301,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3304,
+            "tick": 3326,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3328,
+            "tick": 3351,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3352,
+            "tick": 3376,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3379,
+            "tick": 3401,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3403,
+            "tick": 3426,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3427,
+            "tick": 3451,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3454,
+            "tick": 3476,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3478,
+            "tick": 3501,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3502,
+            "tick": 3526,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3529,
+            "tick": 3551,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3553,
+            "tick": 3576,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3577,
+            "tick": 3601,
+            "cash": 0,
+            "ore": 15
+          },
+          {
+            "firstTick": 3604,
+            "tick": 3626,
+            "cash": 0,
+            "ore": 14
+          },
+          {
+            "firstTick": 3628,
+            "tick": 3651,
+            "cash": 0,
+            "ore": 13
+          },
+          {
+            "firstTick": 3652,
+            "tick": 3676,
+            "cash": 0,
+            "ore": 2
+          }
+        ],
+        "fundingWaits": [],
+        "pauses": []
+      }
+    ]
+  },
+  "squadTimeline": {
+    "squads": [
+      {
+        "id": 1,
+        "kind": "Protection",
+        "createdAt": 1152,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 16,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1156,
+        "membershipChanges": []
+      },
+      {
+        "id": 2,
+        "kind": "Protection",
+        "createdAt": 1272,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1276,
+        "membershipChanges": []
+      },
+      {
+        "id": 3,
+        "kind": "Protection",
+        "createdAt": 1392,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1396,
+        "membershipChanges": []
+      },
+      {
+        "id": 4,
+        "kind": "Protection",
+        "createdAt": 1512,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1516,
+        "membershipChanges": []
+      },
+      {
+        "id": 5,
+        "kind": "Protection",
+        "createdAt": 1632,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1636,
+        "membershipChanges": []
+      },
+      {
+        "id": 6,
+        "kind": "Protection",
+        "createdAt": 1752,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1756,
+        "membershipChanges": []
+      },
+      {
+        "id": 7,
+        "kind": "Protection",
+        "createdAt": 1872,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1876,
+        "membershipChanges": []
+      },
+      {
+        "id": 8,
+        "kind": "Protection",
+        "createdAt": 1992,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 1996,
+        "membershipChanges": []
+      },
+      {
+        "id": 9,
+        "kind": "Protection",
+        "createdAt": 2112,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2116,
+        "membershipChanges": []
+      },
+      {
+        "id": 10,
+        "kind": "Protection",
+        "createdAt": 2232,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2236,
+        "membershipChanges": []
+      },
+      {
+        "id": 11,
+        "kind": "Protection",
+        "createdAt": 2352,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2356,
+        "membershipChanges": []
+      },
+      {
+        "id": 12,
+        "kind": "Protection",
+        "createdAt": 2472,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2476,
+        "membershipChanges": []
+      },
+      {
+        "id": 13,
+        "kind": "Protection",
+        "createdAt": 2592,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2596,
+        "membershipChanges": []
+      },
+      {
+        "id": 14,
+        "kind": "Protection",
+        "createdAt": 2712,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2716,
+        "membershipChanges": []
+      },
+      {
+        "id": 15,
+        "kind": "Protection",
+        "createdAt": 2832,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2836,
+        "membershipChanges": []
+      },
+      {
+        "id": 16,
+        "kind": "Protection",
+        "createdAt": 2952,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 2956,
+        "membershipChanges": []
+      },
+      {
+        "id": 17,
+        "kind": "Protection",
+        "createdAt": 3072,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3076,
+        "membershipChanges": []
+      },
+      {
+        "id": 18,
+        "kind": "Protection",
+        "createdAt": 3192,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3196,
+        "membershipChanges": []
+      },
+      {
+        "id": 19,
+        "kind": "Protection",
+        "createdAt": 3312,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3316,
+        "membershipChanges": []
+      },
+      {
+        "id": 20,
+        "kind": "Protection",
+        "createdAt": 3432,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3436,
+        "membershipChanges": []
+      },
+      {
+        "id": 21,
+        "kind": "Protection",
+        "createdAt": 3552,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3556,
+        "membershipChanges": []
+      },
+      {
+        "id": 22,
+        "kind": "Protection",
+        "createdAt": 3676,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 14,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3680,
+        "membershipChanges": []
+      },
+      {
+        "id": 23,
+        "kind": "Protection",
+        "createdAt": 3796,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 14,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 3800,
+        "membershipChanges": []
+      },
+      {
+        "id": 24,
+        "kind": "Protection",
+        "createdAt": 3916,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 22,
+          "type": "e2",
+          "name": "Grenadier"
+        },
+        "disbandedAt": 3920,
+        "membershipChanges": []
+      },
+      {
+        "id": 25,
+        "kind": "Protection",
+        "createdAt": 4036,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 23,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 4040,
+        "membershipChanges": []
+      },
+      {
+        "id": 26,
+        "kind": "Protection",
+        "createdAt": 4160,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 4164,
+        "membershipChanges": []
+      },
+      {
+        "id": 27,
+        "kind": "Protection",
+        "createdAt": 4280,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 15,
+          "type": "e1",
+          "name": "Rifle Infantry"
+        },
+        "disbandedAt": 4284,
+        "membershipChanges": []
+      },
+      {
+        "id": 28,
+        "kind": "Protection",
+        "createdAt": 4400,
+        "reason": "damage_response",
+        "initialTarget": {
+          "id": 22,
+          "type": "e2",
+          "name": "Grenadier"
+        },
+        "disbandedAt": 4404,
+        "membershipChanges": []
+      }
+    ],
+    "decisions": [
+      {
+        "tick": 996,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 2596,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 4196,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 5796,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 6048,
+        "kind": "rush",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 7396,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 8996,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      },
+      {
+        "tick": 10596,
+        "kind": "assault",
+        "available": 0,
+        "required": 6,
+        "unassigned": 0,
+        "outcome": "below_threshold"
+      }
+    ]
+  }
+}

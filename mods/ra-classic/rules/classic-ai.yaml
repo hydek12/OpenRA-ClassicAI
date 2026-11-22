@@ -1,0 +1,256 @@
+# Agentic Gemini 4 Hydrogen High
+# Authentic Red Alert ClassicAI presets (Easy, Normal, Hard) combining Westwood RULES.INI multipliers
+# with ModularBot cadence controls and difficulty-gated BotModule behaviors.
+
+World:
+	CustomDifficultyRules:
+		Presets:
+			default:
+				Label: Default (OpenRA Standard)
+			classic-easy:
+				Label: ClassicAI Easy
+				BotCondition: classic-ai-override, classic-easy-ai
+				HumanCondition: classic-easy-human
+				Human:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 4
+					BotOrderQuotient: 2
+			classic-normal:
+				Label: ClassicAI Normal
+				BotCondition: classic-ai-override, classic-normal-ai
+				HumanCondition: classic-normal-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 2
+					BotOrderQuotient: 4
+			classic-hard:
+				Label: ClassicAI Hard
+				BotCondition: classic-ai-override, classic-hard-ai
+				HumanCondition: classic-hard-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+					BotTickInterval: 1
+					BotOrderQuotient: 0
+
+Player:
+	SupportPowerBotModule:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && (!classic-ai-override || !classic-easy-ai)
+	PowerDownBotModule:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && (!classic-ai-override || !classic-easy-ai)
+	BuildingRepairBotModule:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && !classic-ai-override
+	BuildingRepairBotModule@classic-normal:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && classic-normal-ai
+		RepairAllBuildingsCoolDown: 300
+	BuildingRepairBotModule@classic-hard:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && classic-hard-ai
+		RepairAllBuildingsCoolDown: 107
+	HarvesterBotModule@rush-naval:
+		RequiresCondition: (enable-rush-ai || enable-naval-ai) && !classic-ai-override
+	HarvesterBotModule@normal-turtle:
+		RequiresCondition: (enable-normal-ai || enable-turtle-ai) && !classic-ai-override
+	HarvesterBotModule@classic-easy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && classic-easy-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 1
+		ScanForIdleHarvestersInterval: 100
+		ScanForLowEffectHarvestersInterval: 800
+		HarvesterEnemyAvoidanceRadius: 0c0
+	HarvesterBotModule@classic-normal:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && classic-normal-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 2
+		ScanForIdleHarvestersInterval: 60
+		ScanForLowEffectHarvestersInterval: 500
+		HarvesterEnemyAvoidanceRadius: 6c0
+	HarvesterBotModule@classic-hard:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai || enable-naval-ai) && classic-hard-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 4
+		ScanForIdleHarvestersInterval: 25
+		ScanForLowEffectHarvestersInterval: 250
+		HarvesterEnemyAvoidanceRadius: 12c0
+		ResourceCellsPerHarvester: 3
+	McvExpansionManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai && !classic-ai-override
+	McvExpansionManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai && !classic-ai-override
+	McvExpansionManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai && !classic-ai-override
+	McvExpansionManagerBotModule@classic-normal:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai) && classic-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MinimumConstructionYardCount: 1
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 6000
+	McvExpansionManagerBotModule@classic-hard:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai) && classic-hard-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap
+		MoveOldConyardFirst: true
+		MinimumConstructionYardCount: 2
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 3500
+		MoveConyardTick: 4000
+	SquadManagerBotModule@rush:
+		RequiresCondition: enable-rush-ai && !classic-ai-override
+	SquadManagerBotModule@normal:
+		RequiresCondition: enable-normal-ai && !classic-ai-override
+	SquadManagerBotModule@turtle:
+		RequiresCondition: enable-turtle-ai && !classic-ai-override
+	SquadManagerBotModule@naval:
+		RequiresCondition: enable-naval-ai && !classic-ai-override
+	SquadManagerBotModule@classic-easy:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai) && classic-easy-ai
+		SquadSize: 30
+		SquadSizeRandomBonus: 20
+		AssignRolesInterval: 100
+		AttackForceInterval: 120
+		RushInterval: 100000
+		MinimumAttackForceDelay: 1500
+		ProtectUnitScanRadius: 6
+		ProtectionScanRadius: 6
+		IdleScanRadius: 6
+		AttackScanRadius: 8
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	SquadManagerBotModule@classic-normal:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai) && classic-normal-ai
+		SquadSize: 25
+		SquadSizeRandomBonus: 15
+		AssignRolesInterval: 50
+		AttackForceInterval: 75
+		RushInterval: 1500
+		MinimumAttackForceDelay: 400
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+		IdleScanRadius: 10
+		AttackScanRadius: 12
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	SquadManagerBotModule@classic-hard:
+		RequiresCondition: (enable-rush-ai || enable-normal-ai || enable-turtle-ai) && classic-hard-ai
+		SquadSize: 18
+		SquadSizeRandomBonus: 10
+		AssignRolesInterval: 25
+		AttackForceInterval: 40
+		RushInterval: 500
+		MinimumAttackForceDelay: 0
+		RushAttackScanRadius: 25
+		ProtectUnitScanRadius: 25
+		ProtectionScanRadius: 15
+		IdleScanRadius: 14
+		AttackScanRadius: 18
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2, mnly
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	SquadManagerBotModule@classic-easy-naval:
+		RequiresCondition: enable-naval-ai && classic-easy-ai
+		SquadSize: 1
+		SquadSizeRandomBonus: 0
+		AssignRolesInterval: 100
+		AttackForceInterval: 120
+		RushInterval: 100000
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	SquadManagerBotModule@classic-normal-naval:
+		RequiresCondition: enable-naval-ai && classic-normal-ai
+		SquadSize: 1
+		SquadSizeRandomBonus: 0
+		AssignRolesInterval: 50
+		AttackForceInterval: 75
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor
+	SquadManagerBotModule@classic-hard-naval:
+		RequiresCondition: enable-naval-ai && classic-hard-ai
+		SquadSize: 1
+		SquadSizeRandomBonus: 0
+		AssignRolesInterval: 25
+		AttackForceInterval: 40
+		ProtectUnitScanRadius: 25
+		ProtectionScanRadius: 15
+		NavalUnitsTypes: ss, msub, dd, ca, lst, pt
+		ExcludeFromSquadsTypes: harv, mcv, dog, badr.bomber, u2
+		ConstructionYardTypes: fact
+		NavalProductionTypes: spen, syrd
+		AirUnitsTypes: mig, yak, heli, hind, mh60
+		AircraftTargetType: AirborneActor
+		ProtectionTypes: harv, mcv, mslo, gap, spen, syrd, iron, pdox, tsla, agun, dome, pbox, hbox, gun, ftur, sam, atek, weap, fact, proc, silo, hpad, afld, afld.ukraine, powr, apwr, stek, barr, kenn, tent, fix, fpwr, tenf, syrf, spef, weaf, domf, fixf, fapw, atef, pdof, mslf, facf
+		IgnoredEnemyTargetTypes: AirborneActor

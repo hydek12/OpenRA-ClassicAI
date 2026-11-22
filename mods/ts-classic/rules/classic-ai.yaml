@@ -1,0 +1,187 @@
+# Agentic Gemini 4 Hydrogen High
+# Tiberian Sun ClassicAI presets (Easy, Normal, Hard per Westwood RULES.INI difficulty naming)
+# combining classic stat multipliers with ModularBot cadence controls and difficulty-gated BotModule behaviors.
+
+World:
+	CustomDifficultyRules:
+		Presets:
+			default:
+				Label: Default (OpenRA Standard)
+			classic-easy:
+				Label: ClassicAI Easy
+				BotCondition: classic-ai-override, classic-easy-ai
+				HumanCondition: classic-easy-human
+				Human:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 4
+					BotOrderQuotient: 2
+			classic-normal:
+				Label: ClassicAI Normal
+				BotCondition: classic-ai-override, classic-normal-ai
+				HumanCondition: classic-normal-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 2
+					BotOrderQuotient: 4
+			classic-hard:
+				Label: ClassicAI Hard
+				BotCondition: classic-ai-override, classic-hard-ai
+				HumanCondition: classic-hard-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+					BotTickInterval: 1
+					BotOrderQuotient: 0
+
+Player:
+	PowerDownBotModule:
+		RequiresCondition: enable-test-ai && (!classic-ai-override || !classic-easy-ai)
+	BuildingRepairBotModule:
+		RequiresCondition: enable-test-ai && !classic-ai-override
+	BuildingRepairBotModule@classic-normal:
+		RequiresCondition: enable-test-ai && classic-normal-ai
+		RepairAllBuildingsCoolDown: 300
+	BuildingRepairBotModule@classic-hard:
+		RequiresCondition: enable-test-ai && classic-hard-ai
+		RepairAllBuildingsCoolDown: 107
+	HarvesterBotModule:
+		RequiresCondition: enable-test-ai && !classic-ai-override
+	HarvesterBotModule@classic-easy:
+		RequiresCondition: enable-test-ai && classic-easy-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 1
+		ScanForIdleHarvestersInterval: 100
+		ScanForLowEffectHarvestersInterval: 800
+		HarvesterEnemyAvoidanceRadius: 0c0
+	HarvesterBotModule@classic-normal:
+		RequiresCondition: enable-test-ai && classic-normal-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 3
+		ScanForIdleHarvestersInterval: 55
+		ScanForLowEffectHarvestersInterval: 450
+		HarvesterEnemyAvoidanceRadius: 7c0
+	HarvesterBotModule@classic-hard:
+		RequiresCondition: enable-test-ai && classic-hard-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 5
+		ScanForIdleHarvestersInterval: 25
+		ScanForLowEffectHarvestersInterval: 250
+		HarvesterEnemyAvoidanceRadius: 12c0
+		ResourceCellsPerHarvester: 3
+	McvExpansionManagerBotModule@test:
+		RequiresCondition: enable-test-ai && !classic-ai-override
+	McvExpansionManagerBotModule@classic-normal:
+		RequiresCondition: enable-test-ai && classic-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: gacnst
+		McvFactoryTypes: gaweap, naweap
+		MinimumConstructionYardCount: 1
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 6000
+	McvExpansionManagerBotModule@classic-hard:
+		RequiresCondition: enable-test-ai && classic-hard-ai
+		McvTypes: mcv
+		ConstructionYardTypes: gacnst
+		McvFactoryTypes: gaweap, naweap
+		MinimumConstructionYardCount: 2
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 3500
+		MoveConyardTick: 4000
+	SquadManagerBotModule@test:
+		RequiresCondition: enable-test-ai && !classic-ai-override
+	SquadManagerBotModule@classic-easy:
+		RequiresCondition: enable-test-ai && classic-easy-ai
+		SquadSize: 28
+		SquadSizeRandomBonus: 20
+		AssignRolesInterval: 100
+		AttackForceInterval: 120
+		RushInterval: 100000
+		MinimumAttackForceDelay: 1500
+		ProtectUnitScanRadius: 6
+		ProtectionScanRadius: 6
+		IdleScanRadius: 6
+		AttackScanRadius: 8
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ConstructionYardTypes: gacnst
+		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		IgnoredEnemyTargetTypes: Air
+	SquadManagerBotModule@classic-normal:
+		RequiresCondition: enable-test-ai && classic-normal-ai
+		SquadSize: 22
+		SquadSizeRandomBonus: 14
+		AssignRolesInterval: 50
+		AttackForceInterval: 75
+		RushInterval: 1400
+		MinimumAttackForceDelay: 400
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+		IdleScanRadius: 10
+		AttackScanRadius: 12
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ConstructionYardTypes: gacnst
+		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		IgnoredEnemyTargetTypes: Air
+	SquadManagerBotModule@classic-hard:
+		RequiresCondition: enable-test-ai && classic-hard-ai
+		SquadSize: 16
+		SquadSizeRandomBonus: 8
+		AssignRolesInterval: 25
+		AttackForceInterval: 40
+		RushInterval: 500
+		MinimumAttackForceDelay: 0
+		RushAttackScanRadius: 25
+		ProtectUnitScanRadius: 25
+		ProtectionScanRadius: 15
+		IdleScanRadius: 14
+		AttackScanRadius: 18
+		ExcludeFromSquadsTypes: harv, mcv, dpod, hunter
+		ConstructionYardTypes: gacnst
+		AirUnitsTypes: orca, orcab, scrin, apache, jumpjet
+		ProtectionTypes: gapowr, gapile, gaweap, gahpad, gadept, garadr, gatech, gaplug, gagate_a, gagate_b, gactwr, napowr, naapwr, nahand, naweap, nahpad, naradr, natech, nastlh, natmpl, namisl, nawast, nagate_a, nagate_b, nalasr, naobel, nasam, weed, gacnst, proc, gasilo, napuls, mcv, harv
+		IgnoredEnemyTargetTypes: Air

@@ -1,0 +1,193 @@
+# Agentic Gemini 4 Hydrogen High
+# Tiberian Dawn ClassicAI presets (Casual, Normal, Hard per C&C Remastered difficulty naming)
+# combining classic stat multipliers with ModularBot cadence controls and difficulty-gated BotModule behaviors.
+
+World:
+	CustomDifficultyRules:
+		Presets:
+			default:
+				Label: Default (OpenRA Standard)
+			classic-casual:
+				Label: ClassicAI Casual
+				BotCondition: classic-ai-override, classic-casual-ai
+				HumanCondition: classic-casual-human
+				Human:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 4
+					BotOrderQuotient: 2
+			classic-normal:
+				Label: ClassicAI Normal
+				BotCondition: classic-ai-override, classic-normal-ai
+				HumanCondition: classic-normal-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 2
+					BotOrderQuotient: 4
+			classic-hard:
+				Label: ClassicAI Hard
+				BotCondition: classic-ai-override, classic-hard-ai
+				HumanCondition: classic-hard-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+					BotTickInterval: 1
+					BotOrderQuotient: 0
+
+Player:
+	SupportPowerBotModule:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && (!classic-ai-override || !classic-casual-ai)
+	BuildingRepairBotModule:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && !classic-ai-override
+	BuildingRepairBotModule@classic-normal:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-normal-ai
+		RepairAllBuildingsCoolDown: 280
+	BuildingRepairBotModule@classic-hard:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-hard-ai
+		RepairAllBuildingsCoolDown: 107
+	HarvesterBotModule:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && !classic-ai-override
+	HarvesterBotModule@classic-casual:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-casual-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 1
+		ScanForIdleHarvestersInterval: 100
+		ScanForLowEffectHarvestersInterval: 800
+		HarvesterEnemyAvoidanceRadius: 0c0
+	HarvesterBotModule@classic-normal:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-normal-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 3
+		ScanForIdleHarvestersInterval: 55
+		ScanForLowEffectHarvestersInterval: 450
+		HarvesterEnemyAvoidanceRadius: 7c0
+	HarvesterBotModule@classic-hard:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-hard-ai
+		HarvesterTypes: harv
+		RefineryTypes: proc
+		InitialHarvesters: 4
+		ScanForIdleHarvestersInterval: 25
+		ScanForLowEffectHarvestersInterval: 250
+		HarvesterEnemyAvoidanceRadius: 12c0
+		ResourceCellsPerHarvester: 3
+	McvExpansionManagerBotModule@cabal:
+		RequiresCondition: enable-cabal-ai && !classic-ai-override
+	McvExpansionManagerBotModule@watson-hal9001:
+		RequiresCondition: (enable-watson-ai || enable-hal9001-ai) && !classic-ai-override
+	McvExpansionManagerBotModule@classic-normal:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-normal-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
+		MinimumConstructionYardCount: 1
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 6000
+	McvExpansionManagerBotModule@classic-hard:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-hard-ai
+		McvTypes: mcv
+		ConstructionYardTypes: fact
+		McvFactoryTypes: weap,afld
+		MinimumConstructionYardCount: 2
+		AdditionalConstructionYardCount: 1
+		BuildAdditionalMCVCashAmount: 3500
+		MoveConyardTick: 4000
+	SquadManagerBotModule@cabal:
+		RequiresCondition: enable-cabal-ai && !classic-ai-override
+	SquadManagerBotModule@watson:
+		RequiresCondition: enable-watson-ai && !classic-ai-override
+	SquadManagerBotModule@hal9001:
+		RequiresCondition: enable-hal9001-ai && !classic-ai-override
+	SquadManagerBotModule@classic-casual:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-casual-ai
+		SquadSize: 22
+		SquadSizeRandomBonus: 18
+		AssignRolesInterval: 100
+		AttackForceInterval: 120
+		RushInterval: 100000
+		MinimumAttackForceDelay: 1500
+		ProtectUnitScanRadius: 6
+		ProtectionScanRadius: 6
+		IdleScanRadius: 6
+		AttackScanRadius: 8
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air
+	SquadManagerBotModule@classic-normal:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-normal-ai
+		SquadSize: 18
+		SquadSizeRandomBonus: 12
+		AssignRolesInterval: 50
+		AttackForceInterval: 75
+		RushInterval: 1500
+		MinimumAttackForceDelay: 500
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+		IdleScanRadius: 10
+		AttackScanRadius: 12
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air
+	SquadManagerBotModule@classic-hard:
+		RequiresCondition: (enable-cabal-ai || enable-watson-ai || enable-hal9001-ai) && classic-hard-ai
+		SquadSize: 15
+		SquadSizeRandomBonus: 8
+		AssignRolesInterval: 25
+		AttackForceInterval: 40
+		RushInterval: 600
+		MinimumAttackForceDelay: 0
+		RushAttackScanRadius: 25
+		ProtectUnitScanRadius: 25
+		ProtectionScanRadius: 15
+		IdleScanRadius: 14
+		AttackScanRadius: 18
+		ExcludeFromSquadsTypes: harv, mcv, a10, mlrs
+		ConstructionYardTypes: fact
+		AirUnitsTypes: heli, orca
+		ProtectionTypes: fact, fact.gdi, fact.nod, nuke, nuk2, proc, silo, pyle, hand, afld, weap, hpad, hq, fix, eye, tmpl, gun, sam, obli, gtwr, atwr, mcv, harv, miss
+		IgnoredEnemyTargetTypes: Air

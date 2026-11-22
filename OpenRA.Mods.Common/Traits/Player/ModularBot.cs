@@ -49,6 +49,8 @@ namespace OpenRA.Mods.Common.Traits
 		readonly Queue<Order> orders = [];
 
 		Player player;
+		// Agentic Gemini 4 Hydrogen High
+		CustomDifficultyRules difficultyRules;
 
 		IBotTick[] tickModules;
 		IBotRespondToAttack[] attackResponseModules;
@@ -72,6 +74,8 @@ namespace OpenRA.Mods.Common.Traits
 
 			IsEnabled = true;
 			player = p;
+			// Agentic Gemini 4 Hydrogen High
+			difficultyRules = world.WorldActor.TraitOrDefault<CustomDifficultyRules>();
 			tickModules = p.PlayerActor.TraitsImplementing<IBotTick>().ToArray();
 			attackResponseModules = p.PlayerActor.TraitsImplementing<IBotRespondToAttack>().ToArray();
 			foreach (var ibe in p.PlayerActor.TraitsImplementing<IBotEnabled>())
@@ -88,17 +92,24 @@ namespace OpenRA.Mods.Common.Traits
 			if (!IsEnabled || self.World.IsLoadingGameSave)
 				return;
 
-			using (new PerfSample("bot_tick"))
+			// Agentic Gemini 4 Hydrogen High
+			var diffMods = difficultyRules?.GetModifiers(player);
+			var tickInterval = Math.Max(1, diffMods?.BotTickInterval ?? 1);
+			if (tickInterval == 1 || self.World.WorldTick % tickInterval == 0)
 			{
-				Sync.RunUnsynced(Game.Settings.Debug.SyncCheckBotModuleCode, world, () =>
+				using (new PerfSample("bot_tick"))
 				{
-					foreach (var t in tickModules)
-						if (t.IsTraitEnabled())
-							t.BotTick(this);
-				});
+					Sync.RunUnsynced(Game.Settings.Debug.SyncCheckBotModuleCode, world, () =>
+					{
+						foreach (var t in tickModules)
+							if (t.IsTraitEnabled())
+								t.BotTick(this);
+					});
+				}
 			}
 
-			var ordersToIssueThisTick = Math.Min((orders.Count + info.MinOrderQuotientPerTick - 1) / info.MinOrderQuotientPerTick, orders.Count);
+			var orderQuotient = diffMods != null && diffMods.BotOrderQuotient > 0 ? diffMods.BotOrderQuotient : info.MinOrderQuotientPerTick;
+			var ordersToIssueThisTick = Math.Min((orders.Count + orderQuotient - 1) / orderQuotient, orders.Count);
 			for (var i = 0; i < ordersToIssueThisTick; i++)
 				world.IssueOrder(orders.Dequeue());
 		}

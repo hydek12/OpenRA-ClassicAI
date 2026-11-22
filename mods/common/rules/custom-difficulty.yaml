@@ -1,0 +1,13 @@
+# Agentic Gemini 4 Hydrogen High
+World:
+	CustomDifficultyRules:
+		DefaultPreset: default
+		Presets:
+			default:
+				Label: Default (No Modifiers)
+
+Player:
+	CustomDifficultyPlayerCondition:
+
+^PlayerHandicaps:
+	CustomDifficultyActorModifier:

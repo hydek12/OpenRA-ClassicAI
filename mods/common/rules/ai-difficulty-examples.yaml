@@ -1,0 +1,40 @@
+# Agentic Gemini 4 Hydrogen High
+# Example non-classic AI difficulty presets showing how modders can implement any AI style
+# in MiniYAML using BotTickInterval, BotOrderQuotient, BotTypes, BotCondition, and ActorCondition.
+World:
+	CustomDifficultyRules:
+		Presets:
+			ai-passive:
+				Label: AI - Relaxed Pacing
+				BotCondition: ai-style-passive
+				Bot:
+					BotTickInterval: 3
+					BotOrderQuotient: 10
+					BuildTime: 125
+					CashTrickler: 100
+			ai-economist:
+				Label: AI - Economy Focus
+				BotCondition: ai-style-economist
+				Bot:
+					ResourceValue: 130
+					Cost: 85
+					BuildTime: 90
+			ai-brutal:
+				Label: AI - High APM & Buffs
+				BotCondition: ai-style-brutal
+				Bot:
+					BotTickInterval: 1
+					BotOrderQuotient: 1
+					Firepower: 115
+					Armor: 115
+					ROF: 85
+					Cost: 80
+					BuildTime: 75
+					ResourceValue: 125
+				BotTypes:
+					rush:
+						BotTickInterval: 1
+						BotOrderQuotient: 1
+						Groundspeed: 115
+						Firepower: 120
+						ROF: 80

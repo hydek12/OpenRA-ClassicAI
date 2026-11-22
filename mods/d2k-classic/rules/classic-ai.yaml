@@ -1,0 +1,168 @@
+# Agentic Gemini 4 Hydrogen High
+# Dune 2000 ClassicAI presets (Easy, Normal, Hard per original Dune 2000 difficulty naming)
+# combining classic stat multipliers with ModularBot cadence controls and difficulty-gated BotModule behaviors.
+
+World:
+	CustomDifficultyRules:
+		Presets:
+			default:
+				Label: Default (OpenRA Standard)
+			classic-easy:
+				Label: ClassicAI Easy
+				BotCondition: classic-ai-override, classic-easy-ai
+				HumanCondition: classic-easy-human
+				Human:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 4
+					BotOrderQuotient: 2
+			classic-normal:
+				Label: ClassicAI Normal
+				BotCondition: classic-ai-override, classic-normal-ai
+				HumanCondition: classic-normal-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+					BotTickInterval: 2
+					BotOrderQuotient: 4
+			classic-hard:
+				Label: ClassicAI Hard
+				BotCondition: classic-ai-override, classic-hard-ai
+				HumanCondition: classic-hard-human
+				Human:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+				Bot:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+					BotTickInterval: 1
+					BotOrderQuotient: 0
+
+Player:
+	SupportPowerBotModule:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && (!classic-ai-override || !classic-easy-ai)
+	BuildingRepairBotModule:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && (!classic-ai-override || !classic-easy-ai)
+	McvManagerBotModule:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && (!classic-ai-override || !classic-easy-ai)
+	HarvesterBotModule:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && !classic-ai-override
+	HarvesterBotModule@classic-easy:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-easy-ai
+		HarvesterTypes: harvester
+		RefineryTypes: refinery
+		InitialHarvesters: 1
+		ScanForIdleHarvestersInterval: 100
+		ScanForLowEffectHarvestersInterval: 800
+		HarvesterEnemyAvoidanceRadius: 0c0
+	HarvesterBotModule@classic-normal:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-normal-ai
+		HarvesterTypes: harvester
+		RefineryTypes: refinery
+		InitialHarvesters: 3
+		ScanForIdleHarvestersInterval: 55
+		ScanForLowEffectHarvestersInterval: 450
+		HarvesterEnemyAvoidanceRadius: 7c0
+	HarvesterBotModule@classic-hard:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-hard-ai
+		HarvesterTypes: harvester
+		RefineryTypes: refinery
+		InitialHarvesters: 5
+		ScanForIdleHarvestersInterval: 25
+		ScanForLowEffectHarvestersInterval: 250
+		HarvesterEnemyAvoidanceRadius: 12c0
+		ResourceCellsPerHarvester: 3
+	SquadManagerBotModule@omnius:
+		RequiresCondition: enable-omnius-ai && !classic-ai-override
+	SquadManagerBotModule@vidious:
+		RequiresCondition: enable-vidious-ai && !classic-ai-override
+	SquadManagerBotModule@gladius:
+		RequiresCondition: enable-gladius-ai && !classic-ai-override
+	SquadManagerBotModule@classic-easy:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-easy-ai
+		SquadSize: 12
+		SquadSizeRandomBonus: 12
+		AssignRolesInterval: 100
+		AttackForceInterval: 120
+		RushInterval: 100000
+		MinimumAttackForceDelay: 1500
+		ProtectUnitScanRadius: 6
+		ProtectionScanRadius: 6
+		IdleScanRadius: 6
+		AttackScanRadius: 8
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep, Air, Cliff
+		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
+	SquadManagerBotModule@classic-normal:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-normal-ai
+		SquadSize: 8
+		SquadSizeRandomBonus: 8
+		AssignRolesInterval: 50
+		AttackForceInterval: 75
+		RushInterval: 1400
+		MinimumAttackForceDelay: 400
+		ProtectUnitScanRadius: 15
+		ProtectionScanRadius: 12
+		IdleScanRadius: 10
+		AttackScanRadius: 12
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep, Air, Cliff
+		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport
+	SquadManagerBotModule@classic-hard:
+		RequiresCondition: (enable-omnius-ai || enable-vidious-ai || enable-gladius-ai) && classic-hard-ai
+		SquadSize: 10
+		SquadSizeRandomBonus: 6
+		AssignRolesInterval: 25
+		AttackForceInterval: 40
+		RushInterval: 500
+		MinimumAttackForceDelay: 0
+		RushAttackScanRadius: 25
+		ProtectUnitScanRadius: 25
+		ProtectionScanRadius: 15
+		IdleScanRadius: 14
+		AttackScanRadius: 18
+		MaxBaseRadius: 40
+		ExcludeFromSquadsTypes: harvester, mcv, carryall, carryall.reinforce, ornithopter
+		ConstructionYardTypes: construction_yard
+		IgnoredEnemyTargetTypes: Creep, Air, Cliff
+		ProtectionTypes: mcv, harvester, construction_yard, conyard.atreides, conyard.harkonnen, conyard.ordos, wind_trap, barracks, refinery, silo, light_factory, heavy_factory, outpost, starport, medium_gun_turret, large_gun_turret, repair_pad, high_tech_factory, research_centre, palace, mcv.starport, harvester.starport

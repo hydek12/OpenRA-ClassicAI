@@ -86,6 +86,10 @@ install_data() (
 			cp -r "${SRC_PATH}/mods/${MOD_ID}" "${DEST_PATH}/mods/"
 			cp -r "${SRC_PATH}/mods/common-content" "${DEST_PATH}/mods/"
 			cp -r "${SRC_PATH}/mods/${MOD_ID}-content" "${DEST_PATH}/mods/"
+			# Agentic Gemini 4 Hydrogen High
+			if [ -d "${SRC_PATH}/mods/${MOD_ID}-classic" ]; then
+				cp -r "${SRC_PATH}/mods/${MOD_ID}-classic" "${DEST_PATH}/mods/"
+			fi
 		fi
 
 		shift

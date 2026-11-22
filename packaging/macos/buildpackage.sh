@@ -88,6 +88,10 @@ build_app() {
 	install_data "${SRCDIR}" "${LAUNCHER_RESOURCES_DIR}" "${MOD_ID}"
 	set_engine_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}"
 	set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}/mod.yaml" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}-content/mod.yaml"
+	# Agentic Gemini 4 Hydrogen High
+	if [ -f "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}-classic/mod.yaml" ]; then
+		set_mod_version "${TAG}" "${LAUNCHER_RESOURCES_DIR}/mods/${MOD_ID}-classic/mod.yaml"
+	fi
 
 	# Assemble multi-resolution icon
 	mkdir "${MOD_ID}.iconset"

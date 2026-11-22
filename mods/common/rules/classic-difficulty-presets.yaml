@@ -1,0 +1,43 @@
+# Agentic Gemini 4 Hydrogen High
+# Example MiniYAML preset pack built on top of CustomDifficultyRules.
+# Modders can create any file like this to define custom AI or gameplay difficulty presets,
+# including BotCondition / HumanCondition / BotTypes / Players overrides.
+World:
+	CustomDifficultyRules:
+		Presets:
+			classic-easy:
+				Label: Classic Easy
+				BotCondition: difficulty-easy-ai
+				HumanCondition: difficulty-easy-human
+				Human:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
+				Bot:
+					Firepower: 100
+					Armor: 100
+					Groundspeed: 100
+					Airspeed: 100
+					ROF: 100
+					Cost: 100
+					BuildTime: 100
+			classic-normal:
+				Label: Classic Normal
+				BotCondition: difficulty-normal-ai
+				HumanCondition: difficulty-normal-human
+			classic-hard:
+				Label: Classic Hard
+				BotCondition: difficulty-hard-ai
+				HumanCondition: difficulty-hard-human
+				Bot:
+					Firepower: 120
+					Armor: 120
+					Groundspeed: 120
+					Airspeed: 120
+					ROF: 80
+					Cost: 80
+					BuildTime: 80
